@@ -1,49 +1,47 @@
 const bookModel = require("../models/bookModel");
-const createBook = async function (req, res) {
+
+const createbook = async function (req, res) {
   let body = req.body;
   let savedData = await bookModel.create(body);
-
   res.send({ data: savedData });
 };
-
-const getBookList = async function (req, res) {
-  let getBooks = await bookModel
-    .find()
-    .select({ bookName: 1, authorName: 1, _id: 0 });
-  res.send({ data: getBooks });
+const getBooks = async function (req, res) {
+  let allBooks = await bookModel.find({ authorName: "Chetan Bhagatt" });
+  if (allBooks.length > 0) {
+    res.send({ data: allBooks });
+  } else {
+    res.send({ msg: "No data found" });
+  }
 };
 
-const getBooksInYear = async function (req, res) {
-  let yearFromReq = req.body.year;
-  let booksSpecificYear = await bookModel.find({ year: yearFromReq });
-
-  res.send({ data: booksSpecificYear });
-};
-const getParticularBook = async function (req, res) {
+const updateBook = async function (req, res) {
   let body = req.body;
-  let getBookDetails = await bookModel.find(body);
+  // let updatedBooks = await bookModel.updateMany(
+  //   { authorName:"Chetan Bhagat" } , { $set: body }
+  // );
 
-  res.send({ data: getBookDetails });
+  let updatedBook = await bookModel.findOneAndUpdate(
+    { authorName: "Chetan Bhagatt" },
+    { $set: body },
+    { new: true, upsert: true }
+  );
+
+  res.send({ data: updatedBook });
 };
 
-const getSpecificPriceBooks = async function (req, res) {
-  let getBooksWithSpecificPrice = await bookModel.find({
-    "price.indianPrice": { $in: ["100INR", "200INR", "500INR"] },
-  });
+const deleteBook = async function (req, res) {
+  // await bookModel.deleteOne({authorName: "Pratiksha"})
 
-  res.send({ data: getBooksWithSpecificPrice });
-};
-const getRandomBooks = async function (req, res) {
-  let getBooks = await bookModel.find({
-    $or: [{ stockAvailable: { $eq: true } }, { totalPages: { $gt: 500 } }],
-  });
-  res.send({ data: getBooks });
+  let deleteBook = await bookModel.updateMany(
+    { authorName: "Pratiksha" },
+    { $set: { isDeleted: true } },
+    { new: true }
+  );
+
+  res.send({ deleteBook });
 };
 
-module.exports.createBooks = createBook;
-module.exports.getBooks = getBookList;
-module.exports.getBooksSpecificYear = getBooksInYear;
-module.exports.getSpecificBooks = getParticularBook;
-module.exports.getSpecificPriceBook = getSpecificPriceBooks;
-
-module.exports.getRandomBook = getRandomBooks;
+module.exports.createBook = createbook;
+module.exports.getBookDetails = getBooks;
+module.exports.updateBooks = updateBook;
+module.exports.deleteBooks = deleteBook;

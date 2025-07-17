@@ -12,12 +12,13 @@ const bookSchema = new mongoose.Schema(
       indianPrice: String,
       europeanPrice: String,
     },
-    year: { type: Number, default: 2021 },
+    sales: { type: Number, default: 10 },
     tags: [String],
-    totalPages: Number,
-    stockAvailable: Boolean,
+    isPublished: Boolean,
+    summary: mongoose.Schema.Types.Mixed,
+    isDeleted: Boolean,
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("mybook", bookSchema);
+module.exports = mongoose.model("mixedtypeBook", bookSchema);
