@@ -36,7 +36,7 @@ router.get("/dateManipulations", function (req, res) {
 
   console.log(moment([2024]).isLeapYear());
 
-  res.send({ msg: " all good " });
+  res.send({ msg: " Done " });
 });
 
 module.exports = router;
