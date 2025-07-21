@@ -12,7 +12,7 @@ const createAuthor = async function (req, res) {
 const createbook = async function (req, res) {
   let body = req.body;
   if (!body.author_id) {
-    return res.send({ msg: "Author Id is required.." });
+    return res.send({ msg: "Author Id is required..." });
   }
   let savedData = await bookModel.create(body);
   res.send({ data: savedData });
@@ -27,7 +27,7 @@ const getSpecificAuthorBooks = async function (req, res) {
   let data1 = await bookModel
     .find({ author_id: authorId })
     .select({ bookName: 1, _id: 0 });
-    // console.log(data1);
+  // console.log(data1);
   let data2 = data1.map((x) => x.bookName);
   res.send({ allBook: data2 });
 };
@@ -55,7 +55,7 @@ const getBookBasedonPrice = async function (req, res) {
     .find({ price: { $gte: 500, $lte: 1000 } })
     .select({ author_id: 1, _id: 0, bookName: 1 });
   // console.log(book);
-  let bookList = book.map((x) => x.bookName);
+  // let bookList = book.map((x) => x.bookName);
 
   let allId = book.map((x) => x.author_id);
   // console.log(allId);
