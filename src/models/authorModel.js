@@ -2,21 +2,11 @@ const mongoose = require("mongoose");
 
 const authorSchema = new mongoose.Schema(
   {
-    firstName: String,
-    lastName: String,
-    mobile: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    emailId: String,
-    gender: {
-      type: String,
-      enum: ["Male", "Female", "Other"],
-    },
+    authorName: String,
     age: Number,
+    address: String,
     rating: Number,
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("author1", authorSchema);
+module.exports = mongoose.model("newAuthor", authorSchema);
