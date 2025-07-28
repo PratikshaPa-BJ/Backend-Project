@@ -5,6 +5,11 @@ const mongoose = require("mongoose");
 
 const createBook = async function (req, res) {
   let body = req.body;
+  // Destructuring
+  // let {name, author} = body;
+  // console.log(name);
+  // console.log(author);
+  
   let authorId = body.author;
   let publisherId = body.publisher;
 
@@ -24,6 +29,7 @@ const createBook = async function (req, res) {
 };
 
 const getAllBooks = async function (req, res) {
+
   let allBooks = await bookModel.find();
   res.send({ data: allBooks });
 };
