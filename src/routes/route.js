@@ -10,6 +10,8 @@ const publisherController = require("../controllers/publisherController");
  router.get("/getBooks", bookController.getBooks );
  router.get('/getBookDetails', bookController.getBooksWithDetails );
  router.put('/updateCoverDetails', bookController.updateCoverDetail);
+ router.put('/updateCover', bookController.updateCoverWithoutPopulate)
  router.put('/getBookByPrice', bookController.updateBookByPrice );
+ router.put('/updateBookPrice', bookController.updateBookPriceWithoutPopulate)
 
 module.exports = router;

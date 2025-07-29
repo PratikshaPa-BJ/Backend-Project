@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const publisherSchema = new mongoose.Schema({
     
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     headquarter: String
 },{ timestamps: true })
 

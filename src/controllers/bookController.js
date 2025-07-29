@@ -6,20 +6,17 @@ const mongoose = require("mongoose");
 const createBook = async function (req, res) {
   let body = req.body;
   // Destructuring
-  // let {name, author} = body;
-  // console.log(name);
-  // console.log(author);
-  
-  let authorId = body.author;
-  let publisherId = body.publisher;
+  let { publisher, author } = body;
+  console.log(publisher);
+  console.log(author);
 
-  if (!authorId || !publisherId) {
+  if (!author || !publisher) {
     return res.send({ msg: "AuthorId or publisherId is required.." });
   } else if (
-    mongoose.isValidObjectId(authorId) &&
-    mongoose.isValidObjectId(publisherId) &&
-    (await authorModel.findOne({ _id: authorId })) &&
-    (await publisherModel.findOne({ _id: publisherId }))
+    mongoose.isValidObjectId(author) &&
+    mongoose.isValidObjectId(publisher) &&
+    (await authorModel.findOne({ _id: author })) &&
+    (await publisherModel.findOne({ _id: publisher }))
   ) {
     let createBooks = await bookModel.create(body);
     return res.send({ data: createBooks });
@@ -29,7 +26,6 @@ const createBook = async function (req, res) {
 };
 
 const getAllBooks = async function (req, res) {
-
   let allBooks = await bookModel.find();
   res.send({ data: allBooks });
 };
@@ -59,8 +55,22 @@ const updateCoverDetails = async function (req, res) {
   // let final = [ ...collection1, ...collection2 ];
   // console.log(final);
   // final.forEach((x)=> x.isHardCover = true);
-  
+
   res.send({ data: books });
+};
+
+const updateCoverWithoutPopulate = async function (req, res) {
+  let specificPublisherId = await publisherModel
+    .find({ name: { $in: ["Penguin", "HarperCollins"] } })
+    .select({ _id: 1 });
+  let arrOfPublisherId = specificPublisherId.map((publisher) => publisher._id);
+
+  let result = await bookModel.updateMany(
+    { publisher: { $in: arrOfPublisherId } },
+    { $set: { isHardCover: true } }
+  );
+
+  res.send({ updatedCoverDeyails: result });
 };
 
 const getBookByPrice = async function (req, res) {
@@ -72,9 +82,28 @@ const getBookByPrice = async function (req, res) {
   });
   res.send({ data: allBook });
 };
+const updateBookPriceWithoutPopulate = async function (req, res) {
+  let specificAuthorId = await authorModel
+    .find({ rating: { $gt: 3.5 } })
+    .select({ _id: 1 });
+
+  let arrOfAuthorId = specificAuthorId.map((author) => author._id);
+
+  let result = await bookModel.updateMany(
+    { author: { $in: arrOfAuthorId } },
+    { $inc: { price: 10 } }
+  );
+  // let result1 = await bookModel.updateMany({ author: { $in: arrOfAuthorId } }, [
+  //   { $set: { price: { $add: ["$price", 10] } } },
+  // ]);
+
+  res.send({ updatedPriceBook: result });
+};
 
 module.exports.createBooks = createBook;
 module.exports.getBooks = getAllBooks;
 module.exports.getBooksWithDetails = getBookWithAllDetails;
 module.exports.updateCoverDetail = updateCoverDetails;
 module.exports.updateBookByPrice = getBookByPrice;
+module.exports.updateCoverWithoutPopulate = updateCoverWithoutPopulate;
+module.exports.updateBookPriceWithoutPopulate = updateBookPriceWithoutPopulate;
