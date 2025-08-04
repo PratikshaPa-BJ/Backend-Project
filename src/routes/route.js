@@ -1,17 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const bookController = require("../controllers/bookController");
-const authorController = require("../controllers/authorController");
-const publisherController = require("../controllers/publisherController");
+const userController = require("../controllers/userController");
+const commonMW = require("../middleware/commonMiddleware");
 
- router.post("/createAuthor", authorController.createAuthor);
- router.post("/createPublisher", publisherController.createPublishers);
- router.post("/createBook", bookController.createBooks);
- router.get("/getBooks", bookController.getBooks );
- router.get('/getBookDetails', bookController.getBooksWithDetails );
- router.put('/updateCoverDetails', bookController.updateCoverDetail);
- router.put('/updateCover', bookController.updateCoverWithoutPopulate)
- router.put('/getBookByPrice', bookController.updateBookByPrice );
- router.put('/updateBookPrice', bookController.updateBookPriceWithoutPopulate)
+router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, userController.basicCode);
+router.get("/test-me", userController.basicRoute);
 
 module.exports = router;

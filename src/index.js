@@ -3,10 +3,12 @@ var bodyParser = require("body-parser");
 
 const route = require("./routes/route.js");
 const { default: mongoose } = require("mongoose");
+const MW = require("./middleware/commonMiddleware");
 
 const app = express();
 
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose
@@ -18,6 +20,9 @@ mongoose
   )
   .then(() => console.log("MongoDb is connected"))
   .catch((err) => console.log(err));
+// global middleware
+
+app.use(MW.globalMid);
 
 app.use("/", route);
 
