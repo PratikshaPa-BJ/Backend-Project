@@ -1,26 +1,4 @@
-const mid1 = function (req, res, next) {
-  console.log("Hi, i am a middleware from mid1");
-  let loggedIn = true;
-  if (loggedIn == true) {
-    console.log("User is logged in ");
-    next();
-  } else {
-    res.send({ msg: "Please Log in or Register" });
-  }
-};
-
-const mid2 = function (req, res, next) {
-  console.log("Hi, i am from mid2 ");
-  //  res.send("Hi, I am mid2 and ending this process");
-  next();
-};
-
-const mid3 = function (req, res, next) {
-  console.log("Hi, i am from mid3 ");
-  next();
-};
-
-const commonMW = function (req, res, next) {
+const globalMW = function (req, res, next) {
   let IP = req.ip;
   console.log("IP address is", IP);
   let url = req.originalUrl;
@@ -56,7 +34,42 @@ const commonMW = function (req, res, next) {
   next();
 };
 
+const mid1 = function (req, res, next) {
+  console.log("Hi, i am a middleware from mid1");
+  let loggedIn = true;
+  if (loggedIn == true) {
+    console.log("User is logged in ");
+    next();
+  } else {
+    res.send({ msg: "Please Log in or Register" });
+  }
+};
+
+const mid2 = function (req, res, next) {
+  req.name = "Pratiksha";
+  console.log("Hi, i am from mid2 ");
+  //  res.send("Hi, I am mid2 and ending this process");
+  next();
+};
+
+const mid3 = function (req, res, next) {
+  console.log("Hi, i am from mid3 ");
+  next();
+};
+
+const myMiddleware = function (req, res, next) {
+  let acceptHeaderVal = req.headers["accept"];
+  if (acceptHeaderVal == "application/json") {
+    req.wantsJson = true;
+  } else {
+    req.wantsJson = false;
+  }
+
+  next();
+};
+
 module.exports.mid1 = mid1;
 module.exports.mid2 = mid2;
 module.exports.mid3 = mid3;
-module.exports.globalMid = commonMW;
+module.exports.globalMid = globalMW;
+module.exports.myMiddleware = myMiddleware;
