@@ -2,13 +2,15 @@ const userModel = require("../models/userModel");
 
 const createUser = async function (req, res) {
   let body = req.body;
-  let header = req.headers["isfreeappuser"];
-  if (header == "true") {
-    body.isFreeAppUser = true;
-  } else {
-    body.isFreeAppUser = false;
-  }
-
+  // let header = req.headers["isfreeappuser"];
+  // if (header == "true") {
+  //   body.isFreeAppUser = true;
+  // } else {
+  //   body.isFreeAppUser = false;
+  // }
+  body.isFreeAppUser = req.freeAppUser;
+  console.log(body.isFreeAppUser);
+  
   let allUser = await userModel.create(body);
   res.send({ data: allUser });
 };

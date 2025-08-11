@@ -8,6 +8,7 @@ age: 90,
 gender: “female” // Allowed values are - “male”, “female”, “other”
 isFreeAppUser: false // Default false value.
 }
+----------------------------------------------------------------------------------------------------------
 Your product document should look like this:
 {
 \_id: ObjectId("61951bfa4d9fe0d34da86344"),
@@ -15,6 +16,7 @@ name:"Catcher in the Rye",
 category:"book",
 price:70 //mandatory property
 }
+------------------------------------------------------------------------------------------------------------------
 Your Order document looks like this:
 {
 \_id: ObjectId("61951bfa4d9fe0d34da86344"),
@@ -24,6 +26,7 @@ amount: 0,
 isFreeAppUser: true,
 date: “22/11/2021”
 }
+-----------------------------------------------------------------------------------------------------------------
 NOTE: In some of the below apis a header validation is to be performed (create user and create order). The name of the header is ‘isFreeAppUser’. Write a header validation that simply checks whether this header is present or not. Please note this validation should only be called in create user and create order apis. Perform this validation in a middleware.
 
 1..Write a POST api to create a product from the product details in request body.

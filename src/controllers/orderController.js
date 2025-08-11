@@ -34,13 +34,17 @@ const createOrder = async function (req, res) {
     return res.send("This User does not exist..");
   }
 
-  let freeAppUsers = req.headers["isfreeappuser"];
-  let freeUser;
-  if (freeAppUsers == "true") {
-    freeUser = true;
-  } else {
-    freeUser = false;
-  }
+  // let freeAppUsers = req.headers["isfreeappuser"];
+  // let freeUser;
+  // if (freeAppUsers == "true") {
+  //   freeUser = true;
+  // } else {
+  //   freeUser = false;
+  // }
+
+  // freeAppUser attribute is set in MW
+  let freeUser = req.freeAppUser;
+  console.log(freeUser);
 
   if (freeUser) {
     body.amount = 0;
