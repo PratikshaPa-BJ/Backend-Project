@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-const productController = require("../controllers/productController");
-const orderController = require("../controllers/orderController");
-const commonMW = require("../middleware/commonMiddleware");
+const commonMW = require("../middleware/auth");
 
-router.post("/createProduct", productController.createProducts);
-router.get("/getProducts", productController.getAllProduct);
-router.post("/createUser", commonMW.orderValidation, userController.createUsers);
-router.get("/getUser", userController.getAllUser);
-router.post("/createOrder", commonMW.orderValidation, orderController.createOrders);
+router.post("/users", userController.registerUser);
+router.post('/login', userController.userLogin);
+router.get('/users/:userId',commonMW.tokenValidation, userController.getUserProfileData);
+router.put('/users/:userId',commonMW.tokenValidation, userController.updateUserData);
+router.delete('/users/:userId',commonMW.tokenValidation, userController.deleteUserData);
+
+
 
 module.exports = router;

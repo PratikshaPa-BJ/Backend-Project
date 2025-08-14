@@ -1,48 +1,51 @@
-Your user document should look like this :
+## TOPIC: Authentication
+
+## Authentication with JWT
+
+1.Token generation
+2.Token verification
+
+---
+
+Note: Remember that authentication means validating the identity of a user. Both token generation and verification together implement authentication. Think of this like getting an ID card the first day of your college and then showing that to a guard seated outside your college's campus gate in future. By showing them this token you are confirming your identity to them. Only a legitimate(valid) student who has taken the admission can own an official ID card.
+
+---
+
+Your user document should look like this :-
+
 {
-\_id: ObjectId("61951bfa4d9fe0d34da86829"),
-name: "Sabiha Khan",
-balance:100, // Default balance at user registration is 100
-address:"New delhi",
-age: 90,
-gender: “female” // Allowed values are - “male”, “female”, “other”
-isFreeAppUser: false // Default false value.
+"\_id" : ObjectId("6226e3d2b98f22b349ca58be"),
+"firstName" : "Sabiha",
+"lastName" : "Khan",
+"mobile" : "9898909087",
+"emailId" : "sk@gmail.com",
+"password" : "password123",
+"gender" : "female",
+"isDeleted": false, //default value is false
+"age" : 12,
+"createdAt" : ISODate("2022-03-08T05:04:18.737Z"),
+"updatedAt" : ISODate("2022-03-08T05:04:18.737Z"),
+"\_\_v" : 0
 }
-----------------------------------------------------------------------------------------------------------
-Your product document should look like this:
+
+---
+
+1. Write a POST api /users to register a user from the user details in request body.
+2. Write a \*POST api /login to login a user that takes user details - email and password from the request body. If the credentials don't match with any user's data return a suitable error. On successful login, generate a JWT token and return it in response body. Example:
+
 {
-\_id: ObjectId("61951bfa4d9fe0d34da86344"),
-name:"Catcher in the Rye",
-category:"book",
-price:70 //mandatory property
+status: true,
+data: {
+token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+    }
+
 }
-------------------------------------------------------------------------------------------------------------------
-Your Order document looks like this:
-{
-\_id: ObjectId("61951bfa4d9fe0d34da86344"),
-userId: “61951bfa4d9fe0d34da86829”,
-productId: “61951bfa4d9fe0d34da86344”
-amount: 0,
-isFreeAppUser: true,
-date: “22/11/2021”
-}
------------------------------------------------------------------------------------------------------------------
-NOTE: In some of the below apis a header validation is to be performed (create user and create order). The name of the header is ‘isFreeAppUser’. Write a header validation that simply checks whether this header is present or not. Please note this validation should only be called in create user and create order apis. Perform this validation in a middleware.
 
-1..Write a POST api to create a product from the product details in request body.
-2..Write a POST api to create a user that takes user details from the request body. If the header isFreeAppUser is not present terminate the request response cycle with an error message that the request is missing a mandatory header. The value of field isFreeAppUser is determined by isFreeAppUser request header.
-3..Write a POST api for order purchase that takes a userId and a productId in request body. If the header isFreeAppUser is not present terminate the request response cycle with an error message that the request is missing a mandatory header If the header is present the control goes to the request handler....
-Perform the user and product validation. Check if the user exists as well as whether the product exists. Return an error with a suitable error message if either of these validations fail For every purchase we save an order document in the orders collection...
-isFreeAppUser property in an Order document depends on the header isFreeAppUser. If the isFreeAppUser header is true then the balance of the user is not deducted and the amount in order is set to 0 as well the attribute in order isFreeAppUser is set to true. If this header has a false value then the product’s price is checked. This value is deducted from the user’s balance and the order amount is set to the product’s price as well as the attrbiute isFreeAppUser is set to false in order document.
-4..Update the logic in middleware to set the isFreeAppUser attribute in req. Use this attribute in the route handler for setting the isFreeAppUser attributes of User and Order collection..
+---
 
-Hints for problem 3:
-1..Validate the header in a middleware. Terminate the req-res cycle if this fails.
-2..Validate the userId. Send error if userId is invalid
-3..Validate the productId. Send the error if productId is invalid
-4..Now write the logic for order creation. 3 scenarios
-   i..Scenario 1 For paid user app and the user has sufficient balance. We deduct the balance from user's balance and update the user. We create an order document
-
-   ii..Scenaio 2 For paid app user and the user has insufficient balance. We send an error that the user doesn't have enough balance
-
-   iii..Scenario 3 For free app user, we dont check user's balance and create the order with 0 amount.
+3. Write a GET api /users/:userId to fetch user details. Pass the userId as path param in the url. Check that request must contain x-auth-token header. If absent, return a suitable error. If present, check that the token is valid.
+4. Write a PUT api /users/:userId to update user details. Pass the userId as path param in the url and update the attributes received in the request body. Check that request must contain x-auth-token header. If absent, return a suitable error.
+5. Write a DELETE api /users/:userId that takes the userId in the path params and marks the isDeleted attribute for a user as true. Check that request must contain x-auth-token header. If absent, return a suitable error.
+6. Once, all the apis are working fine, move the authentication related code in a middleware called auth.js..
+7. Add this middleware at route level in the routes where applicable.

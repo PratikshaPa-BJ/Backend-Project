@@ -3,7 +3,6 @@ var bodyParser = require("body-parser");
 
 const route = require("./routes/route.js");
 const { default: mongoose } = require("mongoose");
-const MW = require("./middleware/commonMiddleware");
 
 const app = express();
 

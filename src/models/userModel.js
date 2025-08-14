@@ -2,25 +2,25 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: String,
+    lastName: String,
+    mobile: {
       type: String,
       required: true,
+      unique: true,
     },
-    balance: {
-      type: Number,
-      default: 100,
-    },
-    address: String,
-    age: Number,
+    emailId: String,
+    password: String,
     gender: {
       type: String,
       enum: ["Male", "Female", "Others"],
     },
-    isFreeAppUser: {
+    age: Number,
+    isDeleted: {
       type: Boolean,
       default: false,
     },
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("userB", userSchema);
+module.exports = mongoose.model("userC", userSchema);
