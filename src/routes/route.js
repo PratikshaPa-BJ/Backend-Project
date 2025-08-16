@@ -7,8 +7,8 @@ router.post("/users", userController.registerUser);
 router.post('/login', userController.userLogin);
 router.get('/users/:userId',commonMW.tokenValidation, userController.getUserProfileData);
 router.put('/users/:userId',commonMW.tokenValidation, userController.updateUserData);
+router.post('/users/:userId/posts', commonMW.tokenValidation, userController.postMessage)
 router.delete('/users/:userId',commonMW.tokenValidation, userController.deleteUserData);
-
 
 
 module.exports = router;
