@@ -29,6 +29,7 @@ const usersLogin = async function (req, res) {
     { userId: user._id.toString(), batch: "Meta", organisation: "Facebook" },
     "seversidesecretkey"
   );
+  res.setHeader("x-auth-token", token);
   res.send({ status: true, data: token });
 };
 
