@@ -1,18 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const authorController = require("../controllers/authorController");
-const blogController = require("../controllers/blogController")
-const commonMW = require("../middleware/auth");
+const collegeController = require("../controllers/collegeController");
+const internController = require("../controllers/internController")
 
-router.post("/authors", authorController.createAuthor);
-router.post('/login', authorController.createLogin)
-router.post("/blogs", commonMW.tokenValidation , blogController.createBlogs );
-router.get('/blogs', commonMW.tokenValidation, blogController.getBlogData);
-router.put('/blogs/:blogId', commonMW.tokenValidation,  blogController.updateBlogData);
-router.delete('/blogs/:blogId', commonMW.tokenValidation, blogController.deleteBlogById);
-router.delete('/blogs', commonMW.tokenValidation, blogController.deleteBlogByQueryParams );
-router.delete('/deleteBlogs', commonMW.tokenValidation, blogController.deleteBlogByQueryParamsAlternative );
-
+router.post("/colleges", collegeController.createCollege);
+router.post('/interns', internController.createIntern);
+router.get('/collegeDetails', collegeController.getCollegeDetails)
 
 
 module.exports = router;
