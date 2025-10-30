@@ -1,5 +1,10 @@
 ## Blogging Site Project Requirement
 
+## overview
+
+This Project is basically a Node.js, Express.js and MongoDb based Backend Application that manages authors and their blogs.
+Authors can register, login and create blogs. Blogs can be updated, retrieved or deleted with proper validation and authorization.
+
 ## Phase I
 
 ### Models
@@ -82,15 +87,6 @@
 - Make sure that only the owner of the blogs is able to edit or delete the blog.
 - In case of unauthorized access return an appropirate error message.
 
-## Testing (Self-evaluation During Development)
-
-- To test these apis create a new collection in Postman named Project 1 Blogging
-- Each api should have a new request in this collection
-- Each request in the collection should be rightly named. Eg Create author, Create blog, Get blogs etc
-- Each member of each team should have their tests in running state
-
-Refer below sample
-
 
 ## Response
 
@@ -124,8 +120,8 @@ Refer below sample
   : false,
   "deletedAt": "",
   // if deleted is true deletedAt will have a date 2021-09-17T04:25:07.803Z,
-  "createdAt": "2021-09-17T04:25:07.803Z",
-  "updatedAt": "2021-09-17T04:25:07.803Z",
+  "createdAt": "2025-09-17T04:25:07.803Z",
+  "updatedAt": "2025-09-17T04:25:07.803Z",
 }
 ```
 
