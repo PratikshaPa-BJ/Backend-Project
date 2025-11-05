@@ -1,5 +1,9 @@
 ## Project - Books Management
 
+## Overview
+
+This is a Backend API Project for managing Books, Users and Reviews. It allows authenticated users to create, update, delete and view books as well as manage book reviews. This project uses JWT Authentication, Express Routing and MongoDB for data handling..
+
 
 ### Models
 
@@ -50,7 +54,7 @@
   reviewedBy: {string, mandatory, default 'Guest', value: reviewer's name},
   reviewedAt: {Date, mandatory},
   rating: {number, min 1, max 5, mandatory},
-  review: {string, optional}
+  review: {string, optional},
   isDeleted: {boolean, default: false},
 }
 ```
@@ -196,7 +200,7 @@
   "subcategory": "Non fiction",
   "isDeleted": false,
   "reviews": 0,
-  "releasedAt": "2021-09-17"
+  "releasedAt": "2021-09-17",
   "createdAt": "2021-09-17T04:25:07.803Z",
   "updatedAt": "2021-09-17T04:25:07.803Z",
 }
@@ -312,12 +316,12 @@
     "_id": ObjectId("88abc190ef0288abc190ef55"),
     "title": "How to win friends and influence people",
     "excerpt": "book body",
-    "userId": ObjectId("88abc190ef0288abc190ef02")
+    "userId": ObjectId("88abc190ef0288abc190ef02"),
     "category": "Book",
     "subcategory": "Non fiction",
     "isDeleted": false,
     "reviews": 0,
-    "releasedAt": "2021-09-17"
+    "releasedAt": "2021-09-17",
     "createdAt": "2021-09-17T04:25:07.803Z",
     "updatedAt": "2021-09-17T04:25:07.803Z",
     "reviewsData": []

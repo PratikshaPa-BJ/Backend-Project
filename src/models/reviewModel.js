@@ -10,7 +10,6 @@ const reviewSchema = new mongoose.Schema({
   },
   reviewedBy: {
     type: String,
-    required: true,
     default: "Guest",
     trim: true,
   },
@@ -35,5 +34,5 @@ const reviewSchema = new mongoose.Schema({
   deletedAt: {
     type: Date,
   },
-});
+}, { timestamps: true });
 module.exports = mongoose.model("Review", reviewSchema);

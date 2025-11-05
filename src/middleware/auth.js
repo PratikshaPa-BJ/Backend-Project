@@ -29,7 +29,7 @@ const authorisation = async function (req, res, next) {
     if (!isValidObjectId(bookidFromReqParams)) {
       return res.status(400).send({
           status: false,
-          msg: "Please provide valid book id in req params",
+          msg: "Please provide a valid book id in req params",
         });
     }
     let bookExist = await bookModel.findOne({
@@ -37,13 +37,13 @@ const authorisation = async function (req, res, next) {
       isDeleted: false,
     });
     if (!bookExist) {
-      return res.status(404).send({ status: false, msg: "Book is either deleted or not found" });
+      return res.status(404).send({ status: false, msg: "Book not found or already deleted.." });
     }
 
     if (useridFromToken !== bookExist.userId.toString()) {
       return res.status(403).send({
         status: false,
-        msg: "Authorization failed, user is not the owner of the book",
+        msg: "Authorization failed, You are not the owner of this book",
       });
     }
     next();
