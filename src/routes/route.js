@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const collegeController = require("../controllers/collegeController");
-const internController = require("../controllers/internController")
+const urlController = require("../controllers/urlController");
 
-router.post("/colleges", collegeController.createCollege);
-router.post('/interns', internController.createIntern);
-router.get('/collegeDetails', collegeController.getCollegeDetails)
+router.post("/url/shorten", urlController.createShortUrl);
+router.get("/:urlCode", urlController.getUrl)
 
 
 module.exports = router;

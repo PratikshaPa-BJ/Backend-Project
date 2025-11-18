@@ -1,3 +1,5 @@
+const validator = require("validator");
+
 const isValidReqBody = function (reqBody) {
   return Object.keys(reqBody).length > 0;
 };
@@ -15,34 +17,16 @@ const isValid = function (value) {
   return true;
 };
 
-function isValidCollegeCode(val) {
-  let regx = /^[a-z]+$/;
-  return regx.test(val.trim());
-}
+const isValidUrl = function (val) {
+  return validator.isURL(val.trim(), {
+    require_protocol: true, // ensure http:// or https://
+    protocols: ["http", "https"], // restrict valid protocols
+  });
+};
 
-function isValidCollegeName(val) {
-  let regx = /^[A-Za-z\s,.'-]+$/;
-  return regx.test(val.trim());
-}
-function isValidName(val) {
-  let regx = /^[A-Za-z\s]+$/;
-  return regx.test(val.trim());
-}
+const isValidUrlCode = function (val) {
+  const re = /^[a-z0-9_-]{7}$/;
+  return re.test(val.trim());
+};
 
-function isValidMobile(mobile) {
-  let regx = /^[6-9]\d{9}$/;
-
-  return regx.test(mobile);
-}
-function isValidEmail(email) {
-  const re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-function isValidLogolink(logolink) {
-  const regx = /^https?:\/\/.+\.(jpg|jpeg|png|webp|svg)$/i;
-  return regx.test(logolink);
-}
-
-module.exports = { isValidReqBody, isValid, isValidCollegeCode, isValidCollegeName, isValidName, isValidMobile, isValidEmail, isValidLogolink };
+module.exports = { isValidReqBody, isValid, isValidUrlCode, isValidUrl };

@@ -1,122 +1,73 @@
-## Open to Intern Project
+## URL Shortner Project
 
 ## Overview
 
-This Project is basically a simple Backend application built using Node.js, Express and MongoDB. It provides RESTful APIs to manage colleges and interns, where colleges can register themselves and interns can apply for internships under those colleges..
+URL shortening is used to create shorter aliases for long URLs. We call these shortened aliases “short links.” Users are redirected to the original URL when they hit these short links. Short links save a lot of space when displayed, printed, messaged, or tweeted. Additionally, users are less likely to mistype shorter URLs.
 
-### Models
+For example, if we shorten the following URL through TinyURL:
 
-- College Model
+https://babeljs.io/blog/2020/10/15/7.12.0#class-static-blocks-12079httpsgithubcombabelbabelpull12079-12143httpsgithubcombabelbabelpull12143
+We would get:
 
-```
-{ name: { mandatory, unique, example iith}, fullName: {mandatory, example `Indian Institute of Technology, Hyderabad`}, logoLink: {mandatory}, isDeleted: {boolean, default: false} }
-```
+https://tinyurl.com/y4ned4ep
+The shortened URL is nearly one-fifth the size of the actual URL.
 
-- Intern Model
+Some of the use cases for URL shortening is to optimise links shared across users, easy tracking of individual links and sometimes hiding the affiliated original URLs.
 
-```
-{ name: {mandatory}, email: {mandatory, valid email, unique}, mobile: {mandatory, valid mobile number, unique}, collegeId: {ObjectId, ref to college model, isDeleted: {boolean, default: false}}}
-```
+Example : tinyurl.com throgh which we can shortened URL.
 
-### POST /colleges
+## Models
 
-- Create a college - a document for each member of the group
-- The logo link will be provided to you by the mentors. This link is a s3 (Amazon's Simple Service) url. Try accessing the link to see if the link is public or not.
+## Url Model
 
-  `Endpoint: BASE_URL/colleges`
+{ urlCode: { mandatory, unique, lowercase, trim }, longUrl: {mandatory, valid url}, shortUrl: {mandatory, unique} }
 
-### POST /interns
+## POST /url/shorten
 
-- Create a document for an intern.
-- Also save the collegeId along with the document. Your request body contains the following fields - { name, mobile, email, collegeName}
-- Return HTTP status 201 on a succesful document creation. Also return the document. The response should be a JSON object like [this](#successful-response-structure)
+Create a short URL for an original url recieved in the request body.
+The baseUrl must be the application's baseUrl. Example if the originalUrl is http://abc.com/user/images/name/2 then the shortened url should be http://localhost:3000/xyz
+Return the shortened unique url. Refer this for the response
+Ensure the same response is returned for an original url everytime
+Return HTTP status 400 for an invalid request
 
-- Return HTTP status 400 for an invalid request with a response body like [this](#error-response-structure)
+## GET /:urlCode
 
-### GET /collegeDetails
+Redirect to the original URL corresponding
+Use a valid HTTP status code meant for a redirection scenario.
+Return a suitable error for a url not found
+Return HTTP status 400 for an invalid request
 
-- Returns the college details for the requested college (Expect a query parameter by the name `collegeName`. This is anabbreviated college name. For example `iith`)
-- Returns the list of all interns who have applied for internship at this college.
-- The response structure should look like [this](#college-details)
 
+
+Use caching while fetching the shortened url to minimize db calls.
+Implement what makes sense to you and we will build understanding over the demo discussion.
+Figure out if you can also use caching while redirecting to the original url from the shortedned url
 
 ## Response
 
-### Successful Response structure
+## Successful Response structure
 
-```yaml
-{ status: true, data: {} }
-```
-
-### Error Response structure
-
-```yaml
-{ status: false, message: "" }
-```
-
-## Collections samples
-
-#### College
-
-```yaml
 {
-  "name": "iith",
-  "fullName": "Indian Institute of Technology, Hyderabad",
-  "logoLink": "https://functionup.s3.ap-south-1.amazonaws.com/colleges/iith.png",
-  "isDeleted": false,
+status: true,
+data: {
+
 }
-```
+}
 
-#### Intern
+## Error Response structure
 
-```yaml
 {
-  "isDeleted": false,
-  "name": "Jane Does",
-  "email": "jane.doe@iith.in",
-  "mobile": "90000900000",
-  "collegeId": ObjectId("888771129c9ea621dc7f5e3b"),
+status: false,
+message: ""
 }
-```
+Response samples
 
-## Response samples
+## Url shorten response
 
-### College details
-
-```yaml
 {
-  "data":
-    {
-      "name": "xyz",
-      "fullName": "Some Institute of Engineering and Technology",
-      "logoLink": "some public s3 link for a college logo",
-      "interns":
-        [
-          {
-            "_id": "123a47301a53ecaeea02be59",
-            "name": "Jane Doe",
-            "email": "jane.doe@miet.ac.in",
-            "mobile": "8888888888",
-          },
-          {
-            "_id": "45692c0e1a53ecaeea02b1ac",
-            "name": "John Doe",
-            "email": "john.doe@miet.ac.in",
-            "mobile": "9999999999",
-          },
-          {
-            "_id": "7898d0251a53ecaeea02a623",
-            "name": "Sukruti",
-            "email": "dummy.email@miet.ac.in",
-            "mobile": "9191919191",
-          },
-          {
-            "_id": "999803da1a53ecaeea02a07e",
-            "name": "Neeraj Kumar",
-            "email": "another.example@miet.ac.in",
-            "mobile": "9898989898",
-          },
-        ],
-    },
+"data": {
+"longUrl": "http://www.abc.com/oneofthelongesturlseverseenbyhumans.com",
+"shortUrl": "http://localhost:3000/ghfgfg",
+"urlCode": "ghfgfg"
 }
-```
+}
