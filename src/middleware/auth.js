@@ -8,7 +8,7 @@ const tokenValidation = function (req, res, next) {
     if (!token) {
       return res.status(401).send({ status: false, msg: "Token must be present in the header.." });
     }
-    jwt.verify(token, "secretkeyForBook", function (error, decodedToken) {
+    jwt.verify(token, process.env.JWT_SECRET, function (error, decodedToken) {
       if (error) {
         return res.status(401).send({ status: false, msg: error.message });
       } else {
@@ -40,7 +40,7 @@ const authorisation = async function (req, res, next) {
       return res.status(404).send({ status: false, msg: "Book not found or already deleted.." });
     }
 
-    if (useridFromToken !== bookExist.userId.toString()) {
+    if (useridFromToken.toString() !== bookExist.userId.toString()) {
       return res.status(403).send({
         status: false,
         msg: "Authorization failed, You are not the owner of this book",

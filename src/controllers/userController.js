@@ -1,7 +1,7 @@
 const userModel = require("../models/userModel");
 const valid = require("../validation/validator");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 const createUser = async function(req, res){
   try{
@@ -72,7 +72,7 @@ const createUser = async function(req, res){
     const saltRounds = 10;
     reqbody.password = await bcrypt.hash(reqbody.password, saltRounds)
     
-    if((typeof address) !== "object" ){
+    if(!address || (typeof address) !== "object" ){
       return res.status(400).send({ status: false, msg: "Please enter Address in object format.."})
    }
     if (Object.keys(address).length == 0) {
@@ -87,12 +87,13 @@ const createUser = async function(req, res){
     if(!valid.isValid(address.pincode)){
       return res.status(400).send({ status: false, msg: "Please provide pincode" })
     }
-    if(!valid.isvalidPincode(address.pincode)){
+    if(!valid.isValidPincode(address.pincode)){
       return res.status(400).send({ status: false, msg: "Pincode should be string and 6 digit.." })
     }
     
-    let createUser = await userModel.create(reqbody);
-    res.status(201).send({ status:true, message:"Registered Successfully", data: createUser })
+    let newUser = await userModel.create(reqbody);
+    let { password:hashedPassword, ...newUserData} = newUser.toObject()
+    res.status(201).send({ status:true, message:"Registered Successfully", data: newUserData })
   
   }catch(error){
     return res.status(500).send({ status: false, msg: error.message})
@@ -131,11 +132,11 @@ const loginUser = async function(req, res){
     const isPasswordCorrect = await bcrypt.compare(password, emailExist.password);
         
     if(!isPasswordCorrect){
-      return res.status(401).send({ status: false, msg: "No user found with this credentials.."})
+      return res.status(401).send({ status: false, msg: "email or password not correct.."})
     }
       console.log("Logged in successfully..");
 
-      let token = jwt.sign({ userId: emailExist._id}, "secretkeyForBook", { expiresIn: "1h"});
+      let token = jwt.sign({ userId: emailExist._id}, process.env.JWT_SECRET, { expiresIn: "1h"});
       res.setHeader("x-api-key", token );
       res.status(200).send({ status: true, message: "Successfully logged in.", data: {token } });
     
@@ -144,5 +145,5 @@ const loginUser = async function(req, res){
    }
 }
 
-module.exports. createUser = createUser;
+module.exports.createUser = createUser;
 module.exports.userLogin = loginUser

@@ -53,7 +53,7 @@ function isValidPassword(password) {
   return re.test(password);
 }
 
- function isvalidPincode(value){
+ function isValidPincode(value){
  if(typeof value !== "string"){
   return false
  }
@@ -103,4 +103,4 @@ function isValidMobile(mobile) {
   return regx.test(mobile);
 }
 
-module.exports = { isValidReqBody, isValid, isValidTitle, isValidName, isValidEmail, isValidPassword, isValidBooktitle, isvalidPincode, isValidISBN, validateDate, isNumeric, isValidMobile};
+module.exports = { isValidReqBody, isValid, isValidTitle, isValidName, isValidEmail, isValidPassword, isValidBooktitle, isValidPincode, isValidISBN, validateDate, isNumeric, isValidMobile};
