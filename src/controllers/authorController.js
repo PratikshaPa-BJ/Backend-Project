@@ -77,9 +77,9 @@ const createAuthor = async function (req, res) {
     let authorCreation = await authorModel.create(reqBody);
     authorCreation = authorCreation.toObject();
     delete authorCreation.password;
-    res.status(201).send({ status: true, data: authorCreation });
+    return res.status(201).send({ status: true, data: authorCreation });
   } catch (error) {
-    res.status(500).send({ status: false, msg: error.message });
+    return res.status(500).send({ status: false, msg: error.message });
   }
 };
 
@@ -122,9 +122,7 @@ const loginData = async function (req, res) {
     }
     console.log("Logged in successfully..");
 
-    let token = jwt.sign({ authorId: authorExist._id }, "serversidekey", {
-      expiresIn: "1h",
-    });
+    let token = jwt.sign({ authorId: authorExist._id }, process.env.JWT_SECRET, { expiresIn: "1h"} );
     res.setHeader("x-api-key", token);
 
     return res.status(200).send({ status: true, msg: "successfully logged in", data: { token } });

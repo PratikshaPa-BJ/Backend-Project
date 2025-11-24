@@ -15,7 +15,7 @@ router.delete('/deleteblog', commonMW.authentication, commonMW.authorisationByQu
 //-------------------------Alternative logic for delete by query blog API-----------------------------------------------
 
 router.delete('/deleteBlogs', commonMW.authentication, blogController.deleteBlogByQueryParamsAlternative );
-router.delete('/blogs', commonMW.authentication, blogController.deleteBlogByQueryParams );
+router.delete('/blogdelete', commonMW.authentication, blogController.deleteBlogByQueryParams );
 
 
 module.exports = router;

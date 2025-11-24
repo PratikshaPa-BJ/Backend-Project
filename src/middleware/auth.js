@@ -8,7 +8,7 @@ const authentication = function (req, res, next) {
     if (!token) {
       return res.status(401).send({ status: false, msg: "Token must be present in header.." });
     }
-    jwt.verify(token, "serversidekey", function (error, decodedToken) {
+    jwt.verify(token, process.env.JWT_SECRET, function (error, decodedToken) {
       if (error) {
         return res.status(401).send({ status: false, msg: error.message });
       } else {
@@ -58,12 +58,12 @@ const authorisationByQuery = async function (req, res, next) {
     const authorLoggedIn = req.authorIdFromDecodedToken;
 
     if (authorId && authorId.trim().length > 0) {
-      authorId = authorId.trim();
+       authorId = authorId.trim();
       if (!isValidObjectId(authorId)) {
         return res.status(400).send({ status: false, msg: "Invalid authorId format..." });
       }
 
-      if (authorId !== authorLoggedIn) {
+      if (authorId.toString() !== authorLoggedIn.toString()) {
         return res.status(403).send({
           status: false,
           msg: "Unauthorised — You cannot delete other author blogs data..",

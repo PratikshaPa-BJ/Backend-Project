@@ -8,9 +8,10 @@ const createBlogs = async function (req, res) {
   try {
     let reqBody = req.body;
     if (!reqBody || !valid.isValidReqBody(reqBody)) {
-      return res.status(400).send({ status: false, msg: "Please provide request body" });
+      return res.status(400).send({ status: false, msg: "Please provide blog details." });
     }
-    let { title, body, tags, category, authorId, isPublished, subcategory } = reqBody;
+    let { title, body, tags, category, authorId, isPublished, subcategory } =
+      reqBody;
 
     if (!valid.isValid(authorId)) {
       return res.status(400).send({ status: false, msg: "author id is mandatory.." });
@@ -28,14 +29,17 @@ const createBlogs = async function (req, res) {
       return res.status(404).send({ status: false, msg: "author id is not present in db" });
     }
     //------------------- authorisation---------------------------------------------------------
-    if (req.authorIdFromDecodedToken.toString() !== authorId) {
-      return res.status(403).send({ status: false, msg: "Unauthorised author..can not create blog.." });
+    if (req.authorIdFromDecodedToken.toString() !== authorId.toString()) {
+      return res.status(403).send({
+          status: false,
+          msg: "Unauthorised author..can not create blog..",
+        });
     }
 
     if (!valid.isValid(title) || typeof title !== "string") {
       return res.status(400).send({
         status: false,
-        msg: "title is required and should be a string..",
+        msg: "title is required and should be a non empty string..",
       });
     }
     reqBody.title = title.trim();
@@ -43,12 +47,12 @@ const createBlogs = async function (req, res) {
     if (!valid.isValid(body) || typeof body !== "string") {
       return res.status(400).send({
         status: false,
-        msg: "blog body part is mandatory and should be string",
+        msg: "blog body part is mandatory and should be non empty string",
       });
     }
     reqBody.body = body.trim();
 
-    if (tags || tags === "") {
+    if (tags !== undefined) {
       if (!Array.isArray(tags) || tags.length === 0) {
         return res.status(400).send({
           status: false,
@@ -70,9 +74,11 @@ const createBlogs = async function (req, res) {
         msg: "category is required and should be in string.",
       });
     }
-    reqBody.category = category.trim();
+    category = category.trim();
+    reqBody.category =
+      category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
-    if (subcategory || subcategory === "") {
+    if (subcategory !== undefined) {
       if (!Array.isArray(subcategory) || subcategory.length === 0) {
         return res.status(400).send({
           status: false,
@@ -107,12 +113,12 @@ const createBlogs = async function (req, res) {
 
 const getBlogData = async function (req, res) {
   try {
-    let obj = {};
+    let obj = { isPublished: true, isDeleted: false };
 
     if (valid.isValidReqBody(req.query)) {
       let { authorId, tags, category, subcategory } = req.query;
 
-      if (authorId ) {
+      if (authorId) {
         if (typeof authorId === "string") {
           authorId = authorId.trim();
         }
@@ -127,29 +133,28 @@ const getBlogData = async function (req, res) {
         obj.authorId = authorId;
       }
       if (valid.isValid(category)) {
-        obj.category = category.trim();
+        category = category.trim();
+        category =
+          category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+        obj.category = category;
       }
 
       if (tags) {
-        if (Array.isArray(tags)) {
-          obj.tags = { $in: tags.map((elem) => elem.trim()) };
-        } else {
-          obj.tags = { $in: tags.split(",").map((elem) => elem.trim()) };
+        const tagsArr = valid.parseToArray(tags);
+        if (!valid.hasValidStringElem(tagsArr)) {
+          return res.status(400).send({ status: false, msg: "Invalid tags format.." });
         }
+        obj.tags = { $in: tagsArr };
       }
 
       if (subcategory) {
-        if (Array.isArray(subcategory)) {
-          obj.subcategory = { $in: subcategory.map((elem) => elem.trim()) };
-        } else {
-          obj.subcategory = {
-            $in: subcategory.split(",").map((elem) => elem.trim()),
-          };
+        const subcatArr = valid.parseToArray(subcategory);
+        if (!valid.hasValidStringElem(subcatArr)) {
+          return res.status(400).send({ status: false, msg: "Invalid subcategory format.." });
         }
+        obj.subcategory = { $in: subcatArr };
       }
     }
-    obj.isDeleted = false;
-    obj.isPublished = true;
 
     let getBlogs = await blogModel.find(obj);
 
@@ -167,7 +172,10 @@ const updateBlogData = async function (req, res) {
     let reqbody = req.body;
     let blogIdFromReq = req.params.blogId;
     if (!reqbody || !valid.isValidReqBody(reqbody)) {
-      return res.status(400).send({ status: false, msg: " Please provide data you want to update in request body " });
+      return res.status(400).send({
+          status: false,
+          msg: " Please provide data you want to update in request body ",
+        });
     }
 
     let { title, body, tags, subcategory } = reqbody;
@@ -230,10 +238,10 @@ const updateBlogData = async function (req, res) {
       pushArr.subcategory = { $each: subcategory };
     }
     let allField = { $set: updateFields };
+
     if (Object.keys(pushArr).length > 0) {
       allField.$addToSet = pushArr;
     }
-
     let updateBlogData = await blogModel.findOneAndUpdate(
       { _id: blogIdFromReq, isDeleted: false },
       allField,
@@ -287,32 +295,32 @@ const deleteBlogByQuery = async function (req, res) {
 
     if (valid.isValid(category)) {
       category = category.trim();
-      category =  category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+      category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
       obj.category = category;
       hasValidFilter = true;
     }
 
     if (tags) {
-      tags = tags.split(",").map((elem) => elem.trim());
-      if (!valid.hasValidStringElem(tags)) {
+      const tagsArr = valid.parseToArray(tags);
+      if (!valid.hasValidStringElem(tagsArr)) {
         return res.status(400).send({
-          status: false,
-          msg: "tags must be a non-empty array of strings..",
-        });
+            status: false,
+            msg: "tags must be a non empty array of string.",
+          });
       }
-      obj.tags = { $in: tags };
+      obj.tags = { $in: tagsArr };
       hasValidFilter = true;
     }
 
     if (subcategory) {
-      subcategory = subcategory.split(",").map((elem) => elem.trim());
-      if (!valid.hasValidStringElem(subcategory)) {
+      const subcatArr = valid.parseToArray(subcategory);
+      if (!valid.hasValidStringElem(subcatArr)) {
         return res.status(400).send({
           status: false,
           msg: "subcategory must be a non-empty array of strings.",
         });
       }
-      obj.subcategory = { $in: subcategory };
+      obj.subcategory = { $in: subcatArr };
       hasValidFilter = true;
     }
 
@@ -343,7 +351,7 @@ const deleteBlogByQuery = async function (req, res) {
 
     return res.status(200).send({
       status: true,
-      msg: `${deletedData.modifiedCount} blog deleted successfully..`,
+      msg: `${deletedData.modifiedCount} blog Deleted Successfully..`,
     });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });
@@ -475,7 +483,9 @@ const deleteBlogByQueryParams = async function (req, res) {
           });
         }
 
-        let dataFound = await blogModel.find(obj).select({ _id: 0, authorId: 1 });
+        let dataFound = await blogModel
+          .find(obj)
+          .select({ _id: 0, authorId: 1 });
 
         if (dataFound.length === 0) {
           return res.status(404).send({
@@ -485,7 +495,10 @@ const deleteBlogByQueryParams = async function (req, res) {
         }
         let count = 0;
         for (let i = 0; i < dataFound.length; i++) {
-          if (dataFound[i].authorId.toString() ===  req.authorIdFromDecodedToken.toString()) {
+          if (
+            dataFound[i].authorId.toString() ===
+            req.authorIdFromDecodedToken.toString()
+          ) {
             count++;
           }
         }
@@ -615,4 +628,5 @@ const deleteBlogByQueryParamsAlternative = async function (req, res) {
 };
 
 module.exports = { createBlogs, getBlogData, updateBlogData, deleteBlogById, deleteBlogByQuery, deleteBlogByQueryParams,
-  deleteBlogByQueryParamsAlternative };
+  deleteBlogByQueryParamsAlternative,
+};

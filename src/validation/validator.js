@@ -56,4 +56,23 @@ function hasValidStringElem(value) {
   return true;
 }
 
-module.exports = { isValidReqBody, isValid, regexValid, isValidTitle, isValidEmail, isValidPassword, hasValidStringElem };
+function parseToArray(val) {
+  if (val === undefined || val === null) {
+    return [];
+  }
+  if (Array.isArray(val)) {
+    return val.map((x) => String(x).trim());
+  }
+
+  val = String(val).trim();
+  if (!val) {
+    return [];
+  }
+  if (val.startsWith("[") && val.endsWith("]")) {
+    val = val.replace(/^\s*\[\s*/, "").replace(/\s*\]\s*$/, "");
+  }
+  return val.split(",").map((x) => x.replace(/['"]+/g, "").trim());
+}
+
+module.exports = { isValidReqBody, isValid, regexValid, isValidTitle, isValidEmail, isValidPassword, hasValidStringElem, parseToArray,
+};
