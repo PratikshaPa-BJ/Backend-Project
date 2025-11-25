@@ -1,9 +1,18 @@
-## Blogging Site Project Requirement
+## Blogging Platform Backend (Node.js + Express + MongoDB)
 
 ## overview
 
 This Project is basically a Node.js, Express.js and MongoDb based Backend Application that manages authors and their blogs.
-Authors can register, login and create blogs. Blogs can be updated, retrieved or deleted with proper validation and authorization.
+Authors can register, login and create blogs. Blogs can be updated, retrieved or deleted with proper validation and authorization. This project supports user authentication, authorization, CRUD operations and Filtering for Blogs.
+
+## Tech Stack
+
+- **Node.js**
+- **Express.js**
+- **MongoDB**
+- **Mongoose**
+- **JWT Authentication**
+- **Postman ( API Testing)**
 
 ## Phase I
 
@@ -87,7 +96,6 @@ Authors can register, login and create blogs. Blogs can be updated, retrieved or
 - Make sure that only the owner of the blogs is able to edit or delete the blog.
 - In case of unauthorized access return an appropirate error message.
 
-
 ## Response
 
 ### Successful Response structure
@@ -137,4 +145,29 @@ Authors can register, login and create blogs. Blogs can be updated, retrieved or
 }
 ```
 
-#### Refer https://jsonplaceholder.typicode.com/guide/ for some fake blogs data.
+## Installation & Setup
+
+### 1. Clone the Repository
+
+     git clone <repo link>
+
+### 2. Install dependencies
+
+     npm install
+
+### 3. Create .env file
+
+      JWT_SECRET=yourSecretKey
+      MONGO_URI=mongodbConnectionString
+
+### 4. Start the server
+
+      node src/index.js
+
+## License
+ 
+ This Project is for learning Purposes
+
+
+
+

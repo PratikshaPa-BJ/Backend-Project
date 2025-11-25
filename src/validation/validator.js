@@ -74,5 +74,4 @@ function parseToArray(val) {
   return val.split(",").map((x) => x.replace(/['"]+/g, "").trim());
 }
 
-module.exports = { isValidReqBody, isValid, regexValid, isValidTitle, isValidEmail, isValidPassword, hasValidStringElem, parseToArray,
-};
+module.exports = { isValidReqBody, isValid, regexValid, isValidTitle, isValidEmail, isValidPassword, hasValidStringElem, parseToArray };

@@ -627,6 +627,4 @@ const deleteBlogByQueryParamsAlternative = async function (req, res) {
   }
 };
 
-module.exports = { createBlogs, getBlogData, updateBlogData, deleteBlogById, deleteBlogByQuery, deleteBlogByQueryParams,
-  deleteBlogByQueryParamsAlternative,
-};
+module.exports = { createBlogs, getBlogData, updateBlogData, deleteBlogById, deleteBlogByQuery, deleteBlogByQueryParams, deleteBlogByQueryParamsAlternative };
