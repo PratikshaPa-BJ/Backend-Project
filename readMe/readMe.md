@@ -340,24 +340,24 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 }
 ```
 
-## Installation & Setup
+##  Installation & Setup
 
-### 1.Clone the Repository
+### 1.  Clone the Repository
 
-git clone <repoLink>
+     git clone <repoLink>
 
-### 2.Install Dependencies
+### 2.  Install Dependencies
 
-npm install
+     npm install
 
-### 3.Create .env file
+### 3.  Create .env file
 
-JWT_SECRET=yourSecretKey
-MONGO_URI=mongoDbConnectionString
+     JWT_SECRET=yourSecretKey
+     MONGO_URI=mongoDbConnectionString
 
-### 4.Start the server
+### 4.  Start the server
 
-node src/index.js
+     node src/index.js
 
 ## License
 
