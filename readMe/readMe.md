@@ -1,9 +1,18 @@
-## Project - Books Management
+## Project - Books Management Project Backend
 
 ## Overview
 
 This is a Backend API Project for managing Books, Users and Reviews. It allows authenticated users to create, update, delete and view books as well as manage book reviews. This project uses JWT Authentication, Express Routing and MongoDB for data handling..
 
+## Tech Stack
+
+-**Node.js** 
+-**Express.js** 
+-**MongoDB** 
+-**Mongoose** 
+-**JWT Authentication** 
+-**Bcrypt for password hashing** 
+-**Postman ( API Testing )**
 
 ### Models
 
@@ -50,12 +59,12 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 
 ```yaml
 {
-  bookId: {ObjectId, mandatory, refs to book model},
-  reviewedBy: {string, mandatory, default 'Guest', value: reviewer's name},
-  reviewedAt: {Date, mandatory},
-  rating: {number, min 1, max 5, mandatory},
-  review: {string, optional},
-  isDeleted: {boolean, default: false},
+  bookId: { ObjectId, mandatory, refs to book model },
+  reviewedBy: { string, mandatory, default 'Guest', value: reviewer's name },
+  reviewedAt: { Date, mandatory },
+  rating: { number, min 1, max 5, mandatory },
+  review: { string, optional },
+  isDeleted: { boolean, default: false },
 }
 ```
 
@@ -152,8 +161,6 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 - Make sure that only the owner of the books is able to create, edit or delete the book.
 - In case of unauthorized access return an appropirate error message.
 
-
-
 ## Response
 
 ### Successful Response structure
@@ -226,27 +233,28 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 ```yaml
 {
   status: true,
-  message: 'Books list',
-  data: [
-    {
-      "_id": ObjectId("88abc190ef0288abc190ef55"),
-      "title": "How to win friends and influence people",
-      "excerpt": "book body",
-      "userId": ObjectId("88abc190ef0288abc190ef02")
-      "category": "Book",
-      "reviews": 0,
-      "releasedAt": "2021-09-17T04:25:07.803Z"
-    },
-    {
-      "_id": ObjectId("88abc190ef0288abc190ef56"),
-      "title": "How to win friends and influence people",
-      "excerpt": "book body",
-      "userId": ObjectId("88abc190ef0288abc190ef02")
-      "category": "Book",
-      "reviews": 0,
-      "releasedAt": "2021-09-17T04:25:07.803Z"
-    }
-  ]
+  message: "Books list",
+  data:
+    [
+      {
+        "_id": ObjectId("88abc190ef0288abc190ef55"),
+        "title": "How to win friends and influence people",
+        "excerpt": "book body",
+        "userId": ObjectId("88abc190ef0288abc190ef02"),
+        "category": "Book",
+        "reviews": 0,
+        "releasedAt": "2021-09-17T04:25:07.803Z",
+      },
+      {
+        "_id": ObjectId("88abc190ef0288abc190ef56"),
+        "title": "How to win friends and influence people",
+        "excerpt": "book body",
+        "userId": ObjectId("88abc190ef0288abc190ef02"),
+        "category": "Book",
+        "reviews": 0,
+        "releasedAt": "2021-09-17T04:25:07.803Z",
+      },
+    ],
 }
 ```
 
@@ -255,54 +263,56 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 ```yaml
 {
   status: true,
-  message: 'Books list',
-  data: {
-    "_id": ObjectId("88abc190ef0288abc190ef55"),
-    "title": "How to win friends and influence people",
-    "excerpt": "book body",
-    "userId": ObjectId("88abc190ef0288abc190ef02")
-    "category": "Book",
-    "subcategory": "Non fiction",
-    "isDeleted": false,
-    "reviews": 4,
-    "releasedAt": "2021-09-17T04:25:07.803Z"
-    "createdAt": "2021-09-17T04:25:07.803Z",
-    "updatedAt": "2021-09-17T04:25:07.803Z",
-    "reviewsData": [
-      {
-        "_id": ObjectId("88abc190ef0288abc190ef88"),
-        bookId: ObjectId("88abc190ef0288abc190ef55"),
-        reviewedBy: "Jane Doe",
-        reviewedAt: "2021-09-17T04:25:07.803Z",
-        rating: 4,
-        review: "An exciting nerving thriller. A gripping tale. A must read book."
-      },
-      {
-        "_id": ObjectId("88abc190ef0288abc190ef89"),
-        bookId: ObjectId("88abc190ef0288abc190ef55"),
-        reviewedBy: "Jane Doe",
-        reviewedAt: "2021-09-17T04:25:07.803Z",
-        rating: 4,
-        review: "An exciting nerving thriller. A gripping tale. A must read book."
-      },
-      {
-        "_id": ObjectId("88abc190ef0288abc190ef90"),
-        bookId: ObjectId("88abc190ef0288abc190ef55"),
-        reviewedBy: "Jane Doe",
-        reviewedAt: "2021-09-17T04:25:07.803Z",
-        rating: 4,
-        review: "An exciting nerving thriller. A gripping tale. A must read book."
-      },
-      {
-        "_id": ObjectId("88abc190ef0288abc190ef91"),
-        bookId: ObjectId("88abc190ef0288abc190ef55"),
-        reviewedBy: "Jane Doe",
-        reviewedAt: "2021-09-17T04:25:07.803Z",
-        rating: 4,
-        review: "An exciting nerving thriller. A gripping tale. A must read book."
-      },
-    ]
-  }
+  message: "Books list",
+  data:
+    {
+      "_id": ObjectId("88abc190ef0288abc190ef55"),
+      "title": "How to win friends and influence people",
+      "excerpt": "book body",
+      "userId": ObjectId("88abc190ef0288abc190ef02"),
+      "category": "Book",
+      "subcategory": "Non fiction",
+      "isDeleted": false,
+      "reviews": 4,
+      "releasedAt": "2021-09-17T04:25:07.803Z",
+      "createdAt": "2021-09-17T04:25:07.803Z",
+      "updatedAt": "2021-09-17T04:25:07.803Z",
+      "reviewsData":
+        [
+          {
+            "_id": ObjectId("88abc190ef0288abc190ef88"),
+            bookId: ObjectId("88abc190ef0288abc190ef55"),
+            reviewedBy: "Jane Doe",
+            reviewedAt: "2021-09-17T04:25:07.803Z",
+            rating: 4,
+            review: "An exciting nerving thriller. A gripping tale. A must read book.",
+          },
+          {
+            "_id": ObjectId("88abc190ef0288abc190ef89"),
+            bookId: ObjectId("88abc190ef0288abc190ef55"),
+            reviewedBy: "Jane Doe",
+            reviewedAt: "2021-09-17T04:25:07.803Z",
+            rating: 4,
+            review: "An exciting nerving thriller. A gripping tale. A must read book.",
+          },
+          {
+            "_id": ObjectId("88abc190ef0288abc190ef90"),
+            bookId: ObjectId("88abc190ef0288abc190ef55"),
+            reviewedBy: "Jane Doe",
+            reviewedAt: "2021-09-17T04:25:07.803Z",
+            rating: 4,
+            review: "An exciting nerving thriller. A gripping tale. A must read book.",
+          },
+          {
+            "_id": ObjectId("88abc190ef0288abc190ef91"),
+            bookId: ObjectId("88abc190ef0288abc190ef55"),
+            reviewedBy: "Jane Doe",
+            reviewedAt: "2021-09-17T04:25:07.803Z",
+            rating: 4,
+            review: "An exciting nerving thriller. A gripping tale. A must read book.",
+          },
+        ],
+    },
 }
 ```
 
@@ -311,20 +321,44 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 ```yaml
 {
   status: true,
-  message: 'Books list',
-  data: {
-    "_id": ObjectId("88abc190ef0288abc190ef55"),
-    "title": "How to win friends and influence people",
-    "excerpt": "book body",
-    "userId": ObjectId("88abc190ef0288abc190ef02"),
-    "category": "Book",
-    "subcategory": "Non fiction",
-    "isDeleted": false,
-    "reviews": 0,
-    "releasedAt": "2021-09-17",
-    "createdAt": "2021-09-17T04:25:07.803Z",
-    "updatedAt": "2021-09-17T04:25:07.803Z",
-    "reviewsData": []
-  }
+  message: "Books list",
+  data:
+    {
+      "_id": ObjectId("88abc190ef0288abc190ef55"),
+      "title": "How to win friends and influence people",
+      "excerpt": "book body",
+      "userId": ObjectId("88abc190ef0288abc190ef02"),
+      "category": "Book",
+      "subcategory": "Non fiction",
+      "isDeleted": false,
+      "reviews": 0,
+      "releasedAt": "2021-09-17",
+      "createdAt": "2021-09-17T04:25:07.803Z",
+      "updatedAt": "2021-09-17T04:25:07.803Z",
+      "reviewsData": [],
+    },
 }
 ```
+
+## Installation & Setup
+
+### 1.Clone the Repository
+
+git clone <repoLink>
+
+### 2.Install Dependencies
+
+npm install
+
+### 3.Create .env file
+
+JWT_SECRET=yourSecretKey
+MONGO_URI=mongoDbConnectionString
+
+### 4.Start the server
+
+node src/index.js
+
+## License
+
+This Project is for learning purpose
