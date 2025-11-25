@@ -6,13 +6,13 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 
 ## Tech Stack
 
--**Node.js** 
--**Express.js** 
--**MongoDB** 
--**Mongoose** 
--**JWT Authentication** 
--**Bcrypt for password hashing** 
--**Postman ( API Testing )**
+- **Node.js** 
+- **Express.js** 
+- **MongoDB** 
+- **Mongoose** 
+- **JWT Authentication** 
+- **Bcrypt for password hashing** 
+- **Postman ( API Testing )**
 
 ### Models
 
