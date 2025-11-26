@@ -2,7 +2,19 @@
 
 ## Overview
 
-This Project is basically a simple Backend application built using Node.js, Express and MongoDB. It provides RESTful APIs to manage colleges and interns, where colleges can register themselves and interns can apply for internships under those colleges..
+This Project is basically a simple Backend application built using Node.js, Express and MongoDB. It provides RESTful APIs to manage colleges and interns, where :
+    - colleges can register themselves.
+    - interns can apply for internships under those colleges.
+It includes Validations, relationship between collections and clean API responses.
+
+
+##  Tech Stack
+
+- **Node.js**
+- **Express.js**
+- **MongoDB + Mongoose**
+- **Javascript(ES6+)**
+- **Postman ( For Testing )**
 
 ### Models
 
@@ -120,3 +132,26 @@ This Project is basically a simple Backend application built using Node.js, Expr
     },
 }
 ```
+
+##  Installation & Setup
+
+###  1. Cone the Repository
+     
+       git clone <repoLink>
+
+###  2. Install Dependencies
+
+      npm i
+
+###  3. Create .env file
+
+      MONGO_URI=yourmongoDbConnectionString
+
+###  4.  Start the server
+
+      node src/index.js
+
+
+## Extra note
+
+   This Backend is also connected with Frontend for more clarity.
