@@ -3,8 +3,8 @@
 ## Overview
 
 This Project is basically a simple Backend application built using Node.js, Express and MongoDB. It provides RESTful APIs to manage colleges and interns, where :
-    - colleges can register themselves.
-    - interns can apply for internships under those colleges.
+- colleges can register themselves.
+- interns can apply for internships under those colleges.
 It includes Validations, relationship between collections and clean API responses.
 
 
