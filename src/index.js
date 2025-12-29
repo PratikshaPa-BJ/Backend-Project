@@ -8,8 +8,8 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 
 app.use(express.json());
-app.use(multer().any())
 app.use(express.urlencoded({ extended: true }));
+app.use(multer().any())
 
 mongoose
   .connect(process.env.MONGO_URI)

@@ -12,24 +12,12 @@ const isValid = function (value) {
   return true;
 };
 
-function isValidTitle(value) {
-  let arr = ["Mr", "Mrs", "Miss"];
-
-  if(typeof value !== "string"){
-    return false
-  }
- value = value.trim();
- const titleValidation = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
- 
-  return arr.includes(titleValidation) ? titleValidation : false
-};
-
 function isValidName(value){
 
  if(typeof value !== "string"){
   return false
  }
- const re = /^[A-Za-z\s.'-]+$/ ;
+ const re = /^[A-Za-z]+$/ ;
 
 return re.test(value)
 }
@@ -43,7 +31,6 @@ function isValidEmail(email) {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
-
 function isValidPassword(password) {
   if(typeof password !== "string"){
     return false
@@ -52,32 +39,58 @@ function isValidPassword(password) {
   const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,15}$/;
   return re.test(password);
 }
-
- function isValidPincode(value){
- if(typeof value !== "string"){
-  return false
- }
- value = value.trim();
- const re = /^\d{6}$/;
- return re.test(value)
- }
-
- function isValidBooktitle(value){
-    if(typeof value !== "string" ){
-      return false
-    }
-    value = value.trim();
-    const re = /^(?=.*[A-Za-z])[A-Za-z0-9\s:,'’"()\-&!?.]+$/ ;
-    return re.test(value)
- }
-
-function isValidISBN(val) {
-  if(typeof val !== "string"){
+function isValidMobile(mobile) {
+  if(typeof mobile !== "string"){
     return false
   }
-  val = val.trim();
-  let regx = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
-  return regx.test(val);
+  mobile = mobile.trim();
+  let regx = /^[6-9]\d{9}$/;
+  return regx.test(mobile);
+}
+function isValidPincode(value){
+ if(typeof value !== "number"){
+  return false
+ }
+ const re = /^\d{6}$/; 
+ return re.test(String(value))
+ }
+
+ const validateAddress = ( addr, type ) => {
+             if(typeof addr !== "object"){
+              return `${type} address must be an object`
+             }
+          
+             if(!addr.street || typeof addr.street !== "string" || !isValid(addr.street)){
+                 return ` ${type} street is required and must be non empty string..`;
+             }
+             if(!addr.city || typeof addr.city !== "string" || !isValid(addr.city)){
+                 return ` ${type} city is required and must be non empty string..`;
+             }
+             if(!addr.pincode || !isValidPincode(addr.pincode)){
+                 return ` ${type} pincode is required and must be six digit number.`;
+             }
+             return false
+ 
+         }
+ 
+function hasNonEmptyStringElem(value) {
+  for (let i = 0; i < value.length; i++) {
+    const elem = value[i];
+    if (typeof elem !== "string" || elem.trim().length === 0) {
+      return false;
+    }
+  }
+  return true;
+}
+function hasValidSize(val){
+  const validSizes = [ "S", "XS", "M", "L", "XL", "XXL", "XXXL", "X" ];
+  for(let size of val){
+    if(!validSizes.includes(size)){
+      return false;
+    }
+
+  }
+ return true;
 }
 
 function validateDate(releasedAt) {
@@ -94,13 +107,6 @@ const isNumeric = (input) => {
   return re.test(input);
 };
 
-function isValidMobile(mobile) {
-  if(typeof mobile !== "string"){
-    return false
-  }
-  mobile = mobile.trim();
-  let regx = /^[6-9]\d{9}$/;
-  return regx.test(mobile);
-}
 
-module.exports = { isValidReqBody, isValid, isValidTitle, isValidName, isValidEmail, isValidPassword, isValidBooktitle, isValidPincode, isValidISBN, validateDate, isNumeric, isValidMobile};
+
+module.exports = { isValidReqBody, isValid, isValidName, isValidEmail, isValidPassword, validateAddress, isValidPincode, hasValidSize, hasNonEmptyStringElem, validateDate, isNumeric, isValidMobile };

@@ -1,4 +1,4 @@
-## Project - Books Management Project Backend
+## Project - Shopping Cart Project
 
 ## Overview
 
