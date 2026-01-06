@@ -1,344 +1,96 @@
-## Project - Shopping Cart Project
+## Project - Shopping Cart E-commerce Project
 
 ## Overview
 
-This is a Backend API Project for managing Books, Users and Reviews. It allows authenticated users to create, update, delete and view books as well as manage book reviews. This project uses JWT Authentication, Express Routing and MongoDB for data handling..
+This project is a RESTful Backend API for an E-commerce application built using Node.js, Express js and MongoDb. It supports user authentication, product management, cart and order handling, images upload using Cloudinary and secure online payments integrated with Stripe Payment Gateway. This project follows a clean MVC structure. It also follows JWT based authentication, authorization and proper validation to ensure a secure and scalable Backend system. This project backend system provides all the essential API's required for an e-commerce platform: 
+
+- Users can register, login, browse products, add items to cart, place orders, cancel orders and make payments
+- orders are securely linked with Stripe payment gateway
+- Product images are uploaded and stored using Cloudinary
+- JWT based authentication ensures secure access
+- Scalable architecture with clean seperation of rotes, controllers, models and middlewares
 
 ## Tech Stack
 
+**Backend**
+
 - **Node.js** 
 - **Express.js** 
+
+**Database**
+
 - **MongoDB** 
 - **Mongoose** 
+
+**Authentication & Security**
+
 - **JWT Authentication** 
 - **Bcrypt for password hashing** 
+
+**File Upload**
+
+- **Cloudinary**
+- **Multer**
+
+**Payments**
+
+- **Stripe Payment Gateway**
+- **Stripe Webhooks**
+
+**Tools**
+
 - **Postman ( API Testing )**
+- **dotenv**
 
-### Models
 
-- User Model
+## Features
 
-```yaml
-{
-  title: {string, mandatory, enum[Mr, Mrs, Miss]},
-  name: {string, mandatory},
-  phone: {string, mandatory, unique},
-  email: {string, mandatory, valid email, unique},
-  password: {string, mandatory, minLen 8, maxLen 15},
-  address: {
-    street: {string},
-    city: {string},
-    pincode: {string}
-  },
-  createdAt: {timestamp},
-  updatedAt: {timestamp}
-}
-```
+### User Model
 
-- Books Model
+- User registration and login
+- Secure Password Hashing
+- JWT Authentication
+- Upload and store user profile image in Cloudinary
+- create, update, get user details
 
-```yaml
-{
-  title: { string, mandatory, unique },
-  excerpt: { string, mandatory },
-  userId: { ObjectId, mandatory, refs to user model },
-  ISBN: { string, mandatory, unique },
-  category: { string, mandatory },
-  subcategory: { string, mandatory },
-  reviews:
-    { number, default: 0, comment: Holds number of reviews of this book },
-  deletedAt: { Date, when the document is deleted },
-  isDeleted: { boolean, default: false },
-  releasedAt: { Date, mandatory, format("YYYY-MM-DD") },
-  createdAt: { timestamp },
-  updatedAt: { timestamp },
-}
-```
+### Product Model
 
-- Review Model (Books review)
+- Create, Update and Delete Products
+- Upload product images using Cloudinary
+- Get product list and product details based on filters, product id
 
-```yaml
-{
-  bookId: { ObjectId, mandatory, refs to book model },
-  reviewedBy: { string, mandatory, default 'Guest', value: reviewer's name },
-  reviewedAt: { Date, mandatory },
-  rating: { number, min 1, max 5, mandatory },
-  review: { string, optional },
-  isDeleted: { boolean, default: false },
-}
-```
+### Cart Model
 
-## User APIs
+- Add Products to cart
+- Update cart items
+- Remove items from cart
+- View Cart Details
 
-### POST /register
+### Order Module
 
-- Create a user - atleast 5 users
-- Create a user document from request body.
-- Return HTTP status 201 on a succesful user creation. Also return the user document. The response should be a JSON object like [this](#successful-response-structure)
-- Return HTTP status 400 if no params or invalid params received in request body. The response should be a JSON object like [this](#error-response-structure)
+- Place order from Cart
+- Cancel Order(only if cancellable)
+- Order status manage
+- Prevent Duplicate Payments
 
-### POST /login
+### Payment Module(Stripe)
 
-- Allow an user to login with their email and password.
-- On a successful login attempt return a JWT token contatining the userId, exp, iat. The response should be a JSON object like [this](#successful-response-structure)
-- If the credentials are incorrect return a suitable error message with a valid HTTP status code. The response should be a JSON object like [this](#error-response-structure)
+- Create Stripe Payment Intent
+- Secure Card Payments
+- Webhook based payment confirmation
+- Auto update order status after payment success
 
-## Books API
+### Coudinary Integration
 
-### POST /books
+- Secure Cloud Image Storage
+- Upload User profile images
+- Upload Product Images
 
-- Create a book document from request body. Get userId in request body only.
-- Make sure the userId is a valid userId by checking the user exist in the users collection.
-- Return HTTP status 201 on a succesful book creation. Also return the book document. The response should be a JSON object like [this](#successful-response-structure)
-- Create atleast 10 books for each user
-- Return HTTP status 400 for an invalid request with a response body like [this](#error-response-structure)
+## Environment Variable
 
-### GET /books
+Create a .env file in the root directory and add some variable name with value:
+  MONGO_URI , CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, JWT_SECRET_KEY, STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET
 
-- Returns all books in the collection that aren't deleted. Return only book \_id, title, excerpt, userId, category, releasedAt, reviews field. Response example [here](#get-books-response)
-- Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure)
-- If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure)
-- Filter books list by applying filters. Query param can have any combination of below filters.
-  - By userId
-  - By category
-  - By subcategory
-    example of a query url: books?filtername=filtervalue&f2=fv2
-- Return all books sorted by book name in Alphabatical order
-
-### GET /books/:bookId
-
-- Returns a book with complete details including reviews. Reviews array would be in the form of Array. Response example [here](#book-details-response)
-- Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure)
-- If the book has no reviews then the response body should include book detail as shown [here](#book-details-response-no-reviews) and an empty array for reviewsData.
-- If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure)
-
-### PUT /books/:bookId
-
-- Update a book by changing its
-  - title
-  - excerpt
-  - release date
-  - ISBN
-- Make sure the unique constraints are not violated when making the update
-- Check if the bookId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404 with a response body like [this](#error-response-structure)
-- Return an HTTP status 200 if updated successfully with a body like [this](#successful-response-structure)
-- Also make sure in the response you return the updated book document.
-
-### DELETE /books/:bookId
-
-- Check if the bookId exists and is not deleted. If it does, mark it deleted and return an HTTP status 200 with a response body with status and message.
-- If the book document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure)
-
-## Review APIs
-
-### POST /books/:bookId/review
-
-- Add a review for the book in reviews collection.
-- Check if the bookId exists and is not deleted before adding the review. Send an error response with appropirate status code like [this](#error-response-structure) if the book does not exist
-- Get review details like review, rating, reviewer's name in request body.
-- Update the related book document by increasing its review count
-- Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like [this](#successful-response-structure)
-
-### PUT /books/:bookId/review/:reviewId
-
-- Update the review - review, rating, reviewer's name.
-- Check if the bookId exists and is not deleted before updating the review. Check if the review exist before updating the review. Send an error response with appropirate status code like [this](#error-response-structure) if the book does not exist
-- Get review details like review, rating, reviewer's name in request body.
-- Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like [this](#book-details-response)
-
-### DELETE /books/:bookId/review/:reviewId
-
-- Check if the review exist with the reviewId. Check if the book exist with the bookId. Send an error response with appropirate status code like [this](#error-response-structure) if the book or book review does not exist
-- Delete the related reivew.
-- Update the books document - decrease review count by one
-
-### Authentication
-
-- Make sure all the book routes are protected.
-
-### Authorisation
-
-- Make sure that only the owner of the books is able to create, edit or delete the book.
-- In case of unauthorized access return an appropirate error message.
-
-## Response
-
-### Successful Response structure
-
-```yaml
-{ status: true, message: "Success", data: {} }
-```
-
-### Error Response structure
-
-```yaml
-{ status: false, message: "" }
-```
-
-## Collections
-
-## users
-
-```yaml
-{
-  _id: ObjectId("88abc190ef0288abc190ef02"),
-  title: "Mr",
-  name: "John Doe",
-  phone: 9897969594,
-  email: "johndoe@mailinator.com",
-  password: "abcd1234567",
-  address:
-    { street: "110, Ridhi Sidhi Tower", city: "Jaipur", pincode: "400001" },
-  "createdAt": "2021-09-17T04:25:07.803Z",
-  "updatedAt": "2021-09-17T04:25:07.803Z",
-}
-```
-
-### books
-
-```yaml
-{
-  "_id": ObjectId("88abc190ef0288abc190ef55"),
-  "title": "How to win friends and influence people",
-  "excerpt": "book body",
-  "userId": ObjectId("88abc190ef0288abc190ef02"),
-  "ISBN": "978-0008391331",
-  "category": "Book",
-  "subcategory": "Non fiction",
-  "isDeleted": false,
-  "reviews": 0,
-  "releasedAt": "2021-09-17",
-  "createdAt": "2021-09-17T04:25:07.803Z",
-  "updatedAt": "2021-09-17T04:25:07.803Z",
-}
-```
-
-### reviews
-
-```yaml
-{
-  "_id": ObjectId("88abc190ef0288abc190ef88"),
-  bookId: ObjectId("88abc190ef0288abc190ef55"),
-  reviewedBy: "Jane Doe",
-  reviewedAt: "2021-09-17T04:25:07.803Z",
-  rating: 4,
-  review: "An exciting nerving thriller. A gripping tale. A must read book.",
-}
-```
-
-## Response examples
-
-### Get books response
-
-```yaml
-{
-  status: true,
-  message: "Books list",
-  data:
-    [
-      {
-        "_id": ObjectId("88abc190ef0288abc190ef55"),
-        "title": "How to win friends and influence people",
-        "excerpt": "book body",
-        "userId": ObjectId("88abc190ef0288abc190ef02"),
-        "category": "Book",
-        "reviews": 0,
-        "releasedAt": "2021-09-17T04:25:07.803Z",
-      },
-      {
-        "_id": ObjectId("88abc190ef0288abc190ef56"),
-        "title": "How to win friends and influence people",
-        "excerpt": "book body",
-        "userId": ObjectId("88abc190ef0288abc190ef02"),
-        "category": "Book",
-        "reviews": 0,
-        "releasedAt": "2021-09-17T04:25:07.803Z",
-      },
-    ],
-}
-```
-
-### Book details response
-
-```yaml
-{
-  status: true,
-  message: "Books list",
-  data:
-    {
-      "_id": ObjectId("88abc190ef0288abc190ef55"),
-      "title": "How to win friends and influence people",
-      "excerpt": "book body",
-      "userId": ObjectId("88abc190ef0288abc190ef02"),
-      "category": "Book",
-      "subcategory": "Non fiction",
-      "isDeleted": false,
-      "reviews": 4,
-      "releasedAt": "2021-09-17T04:25:07.803Z",
-      "createdAt": "2021-09-17T04:25:07.803Z",
-      "updatedAt": "2021-09-17T04:25:07.803Z",
-      "reviewsData":
-        [
-          {
-            "_id": ObjectId("88abc190ef0288abc190ef88"),
-            bookId: ObjectId("88abc190ef0288abc190ef55"),
-            reviewedBy: "Jane Doe",
-            reviewedAt: "2021-09-17T04:25:07.803Z",
-            rating: 4,
-            review: "An exciting nerving thriller. A gripping tale. A must read book.",
-          },
-          {
-            "_id": ObjectId("88abc190ef0288abc190ef89"),
-            bookId: ObjectId("88abc190ef0288abc190ef55"),
-            reviewedBy: "Jane Doe",
-            reviewedAt: "2021-09-17T04:25:07.803Z",
-            rating: 4,
-            review: "An exciting nerving thriller. A gripping tale. A must read book.",
-          },
-          {
-            "_id": ObjectId("88abc190ef0288abc190ef90"),
-            bookId: ObjectId("88abc190ef0288abc190ef55"),
-            reviewedBy: "Jane Doe",
-            reviewedAt: "2021-09-17T04:25:07.803Z",
-            rating: 4,
-            review: "An exciting nerving thriller. A gripping tale. A must read book.",
-          },
-          {
-            "_id": ObjectId("88abc190ef0288abc190ef91"),
-            bookId: ObjectId("88abc190ef0288abc190ef55"),
-            reviewedBy: "Jane Doe",
-            reviewedAt: "2021-09-17T04:25:07.803Z",
-            rating: 4,
-            review: "An exciting nerving thriller. A gripping tale. A must read book.",
-          },
-        ],
-    },
-}
-```
-
-### Book details response no reviews
-
-```yaml
-{
-  status: true,
-  message: "Books list",
-  data:
-    {
-      "_id": ObjectId("88abc190ef0288abc190ef55"),
-      "title": "How to win friends and influence people",
-      "excerpt": "book body",
-      "userId": ObjectId("88abc190ef0288abc190ef02"),
-      "category": "Book",
-      "subcategory": "Non fiction",
-      "isDeleted": false,
-      "reviews": 0,
-      "releasedAt": "2021-09-17",
-      "createdAt": "2021-09-17T04:25:07.803Z",
-      "updatedAt": "2021-09-17T04:25:07.803Z",
-      "reviewsData": [],
-    },
-}
-```
 
 ##  Installation & Setup
 
@@ -350,14 +102,32 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 
      npm install
 
-### 3.  Create .env file
-
-     JWT_SECRET=yourSecretKey
-     MONGO_URI=mongoDbConnectionString
-
-### 4.  Start the server
+### 3.  Start the server
 
      node src/index.js
+
+## Payment Flow(Stripe)
+
+- User places an order
+- Backend creates Stripe Payment Intent
+- Client completes Card Payment
+- Stripe webhook confirms payment
+- Order status automatically updated to paid & completed
+
+## Authentication Flow
+
+- Login returns JWT token
+- Token must be sent in headers
+- Middleware validates token for protected routes
+
+## Key Learnings
+
+- Real world REST API architecture
+- Secure authentication & authorization
+- Cloudinary image handling
+- MongoDB data modeling
+- Stripe payment integration and webhooks
+
 
 ## License
 

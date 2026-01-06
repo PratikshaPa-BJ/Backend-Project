@@ -41,8 +41,19 @@ const orderSchema = new mongoose.Schema(
     },
     deletedAt: {
       type: Date
+    },
+    paymentId: {
+      type: String,
+      default: null
+    },
+    paymentStatus:{
+      type: String,
+      enum: [ "pending", "failed", "paid"],
+      default: "pending"
     }
+
   },
+  
   { timestamps: true }
 );
 

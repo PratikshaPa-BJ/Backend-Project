@@ -1,6 +1,6 @@
 const productModel = require("../models/productModel");
 const valid = require("../validation/validator");
-const cloudinary = require("../../cloudinary");
+const cloudinary = require("../utils/cloudinary");
 const { isValidObjectId } = require("mongoose");
 
 const createProducts = async function (req, res) {

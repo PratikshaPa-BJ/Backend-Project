@@ -52,8 +52,8 @@ try{
   if(typeof status === "string"){
     status = status.trim().toLowerCase()
   }
-  if(!["completed", "cancelled"].includes(status)){
-    return res.status(400).send({ status: false, msg: "status can only be completed or cancelled "})
+  if(status !== "cancelled"){
+    return res.status(400).send({ status: false, msg: "user can only update status as cancelled "})
   }
   let orderExist = await orderModel.findOne({ _id: orderId, userId: userIdFromReq, isDeleted:false });
   if(!orderExist){
