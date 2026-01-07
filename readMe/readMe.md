@@ -2,13 +2,14 @@
 
 ## Overview
 
-This project is a RESTful Backend API for an E-commerce application built using Node.js, Express js and MongoDb. It supports user authentication, product management, cart and order handling, images upload using Cloudinary and secure online payments integrated with Stripe Payment Gateway. This project follows a clean MVC structure. It also follows JWT based authentication, authorization and proper validation to ensure a secure and scalable Backend system. This project backend system provides all the essential API's required for an e-commerce platform: 
+This project is a RESTful Backend API for an E-commerce application built using Node.js, Express js and MongoDb. It supports user authentication, product management, cart and order handling, images upload using Cloudinary and secure online payments integrated with Stripe Payment Gateway. This project follows a clean MVC architecture, uses JWT based authentication, authorization and proper validation to ensure a secure and scalable Backend system. This project backend system provides all the essential API's required for an e-commerce platform: 
 
 - Users can register, login, browse products, add items to cart, place orders, cancel orders and make payments
-- orders are securely linked with Stripe payment gateway
+- Products and cart management
 - Product images are uploaded and stored using Cloudinary
 - JWT based authentication ensures secure access
-- Scalable architecture with clean seperation of rotes, controllers, models and middlewares
+- orders are securely linked with Stripe payment gateway with webhook verification
+- Scalable architecture with clean seperation of routes, controllers, models and middlewares
 
 ## Tech Stack
 
@@ -45,25 +46,26 @@ This project is a RESTful Backend API for an E-commerce application built using 
 
 ## Features
 
-### User Model
+### User Module
 
 - User registration and login
-- Secure Password Hashing
-- JWT Authentication
+- Secure Password Hashing with bcrypt
+- JWT based Authentication
 - Upload and store user profile image in Cloudinary
 - create, update, get user details
 
-### Product Model
+### Product Module
 
 - Create, Update and Delete Products
 - Upload product images using Cloudinary
-- Get product list and product details based on filters, product id
+- Get product list with filters 
+- Get product details by product id
 
-### Cart Model
+### Cart Module
 
 - Add Products to cart
 - Update cart items
-- Remove items from cart
+- Remove products from cart
 - View Cart Details
 
 ### Order Module
@@ -78,7 +80,7 @@ This project is a RESTful Backend API for an E-commerce application built using 
 - Create Stripe Payment Intent
 - Secure Card Payments
 - Webhook based payment confirmation
-- Auto update order status after payment success
+- Auto update order status after successfull payment
 
 ### Coudinary Integration
 
@@ -89,7 +91,61 @@ This project is a RESTful Backend API for an E-commerce application built using 
 ## Environment Variable
 
 Create a .env file in the root directory and add some variable name with value:
-  MONGO_URI , CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, JWT_SECRET_KEY, STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET
+
+```yaml
+   MONGO_URI =your_mongodb_connection_string
+   CLOUD_NAME=your_cloudinary_name
+   CLOUD_API_KEY=coludinary_api_key
+   CLOUD_API_SECRET=cloudinary_api_secret
+   JWT_SECRET_KEY=your_jwt_secret_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+```
+
+## API Documentation
+
+### 🔐 User APIs
+
+  | Method | Endpoint | Description |
+  |--------|----------|-------------|
+  | POST   |`/register` |  Register New User |
+  | POST   | `/login` | user login |
+  | GET   | `/users/:userId/profile` | Get user profile details |
+  | PUT   | `/users/:userId/profile` | Update user profile details |
+
+### 📦 Product APIs
+    
+    | Method | Endpoint | Description |
+    |--------|----------|-------------|
+    | POST   |`/products` |  Create New Product |
+    | GET   | `/products` | Get all products by applying Filter |
+    | GET   | `/products/:productId` | Get product by id |
+    | PUT   | `/products/:productId` | Update product |
+    | DELETE | `/products/:productId` | Delete product |
+
+### 🛒 Cart APIs
+
+    | Method | Endpoint | Description |
+    |--------|----------|-------------|
+    | POST   |`/users/:userId/cart` |  Add Product to cart  |
+    | PUT  | `/users/:userId/cart` | Update cart  |
+    | GET   | `/users/:userId/cart` | View Cart  |
+    | DELETE | `/users/:userId/cart` | Delete Cart |
+
+### 📑 Order APIs
+     
+    | Method | Endpoint | Description |
+    |--------|----------|-------------|
+    | POST   |`/users/:userId/order` |  User place order  |
+    | PUT    | `/users/:userId/order` | User can cancel order(if cancellable)  |
+
+### 💳 Payment APIs(Stripe)
+
+    | Method | Endpoint | Description |
+    |--------|----------|-------------|
+    | POST   |`/api/payments/create-payment-intent` |  Create Stripe Payment Intent  |
+    | PUT    | `/api/payments/payment/webhook` | Stripe webhook endpoint  |
 
 
 ##  Installation & Setup
@@ -111,8 +167,9 @@ Create a .env file in the root directory and add some variable name with value:
 - User places an order
 - Backend creates Stripe Payment Intent
 - Client completes Card Payment
-- Stripe webhook confirms payment
-- Order status automatically updated to paid & completed
+- Stripe sends webhook event
+- Backend verifies webhook
+- Order status updated to paid & completed
 
 ## Authentication Flow
 
@@ -126,9 +183,12 @@ Create a .env file in the root directory and add some variable name with value:
 - Secure authentication & authorization
 - Cloudinary image handling
 - MongoDB data modeling
-- Stripe payment integration and webhooks
+- Stripe payment integration with webhooks
 
+## Author
+
+This project is created by me(Pratiksha Parihari).
 
 ## License
 
-This Project is for learning purpose
+This Project is created for learning purpose.
