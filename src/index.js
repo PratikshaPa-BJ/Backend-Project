@@ -8,7 +8,6 @@ const { default: mongoose } = require("mongoose");
 
 const app = express();
 
-app.use("/api/payments", paymentRoute)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,7 +18,8 @@ mongoose
   .then(() => console.log("MongoDb is connected"))
   .catch((err) => console.log("MongoDb connection error" , err));
    
-  
+  app.use("/api/payments", paymentRoute)
+
   app.use("/", route);
 
 const PORT = process.env.PORT || 3000;

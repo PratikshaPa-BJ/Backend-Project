@@ -2,14 +2,15 @@
 
 ## Overview
 
-This project is a RESTful Backend API for an E-commerce application built using Node.js, Express js and MongoDb. It supports user authentication, product management, cart and order handling, images upload using Cloudinary and secure online payments integrated with Stripe Payment Gateway. This project follows a clean MVC architecture, uses JWT based authentication, authorization and proper validation to ensure a secure and scalable Backend system. This project backend system provides all the essential API's required for an e-commerce platform: 
+This project is a RESTful Backend API for an E-commerce application built using Node.js, Express.js and MongoDB. It supports user authentication, product management, cart and order handling, images upload using Cloudinary and secure online payments integrated with Stripe Payment Gateway. This project follows a clean MVC architecture, uses JWT based authentication, authorization and proper validation to ensure a secure and scalable Backend system. This project backend system provides all the essential API's required for an e-commerce platform: 
 
 - Users can register, login, browse products, add items to cart, place orders, cancel orders and make payments
 - Products and cart management
 - Product images are uploaded and stored using Cloudinary
 - JWT based authentication ensures secure access
 - orders are securely linked with Stripe payment gateway with webhook verification
-- Scalable architecture with clean seperation of routes, controllers, models and middlewares
+- Scalable architecture with clean separation of routes, controllers, models and middlewares
+- uses proper validation for all APIs
 
 ## Tech Stack
 
@@ -105,6 +106,10 @@ Create a .env file in the root directory and add some variable name with value:
 
 ## API Documentation
 
+### Base URL
+   
+   http://localhost:3000
+
 ### 🔐 User APIs
 
 | Method | Endpoint | Description |
@@ -145,7 +150,7 @@ Create a .env file in the root directory and add some variable name with value:
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST   |`/api/payments/create-payment-intent` |  Create Stripe Payment Intent  |
-| PUT    | `/api/payments/payment/webhook` | Stripe webhook endpoint  |
+| POST    | `/api/payments/payment/webhook` | Stripe webhook endpoint  |
 
 
 ##  Installation & Setup
@@ -161,6 +166,10 @@ Create a .env file in the root directory and add some variable name with value:
 ### 3.  Start the server
 
      node src/index.js
+
+### 4. Server running on
+     
+     http://localhost:3000
 
 ## Payment Flow(Stripe)
 

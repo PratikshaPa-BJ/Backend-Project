@@ -93,20 +93,8 @@ function hasValidSize(val){
  return true;
 }
 
-function validateDate(releasedAt) {
-  if(typeof releasedAt !== "string"){
-    return false
-  }
-  releasedAt = releasedAt.trim()
-  let regx = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-  return regx.test(releasedAt);
-}
-
-const isNumeric = (input) => {
-  var re = /^(?:[1-9]\d*|0)\.\d+$|^[1-9]\d*$/;
-  return re.test(input);
-};
 
 
 
-module.exports = { isValidReqBody, isValid, isValidName, isValidEmail, isValidPassword, validateAddress, isValidPincode, hasValidSize, hasNonEmptyStringElem, validateDate, isNumeric, isValidMobile };
+
+module.exports = { isValidReqBody, isValid, isValidName, isValidEmail, isValidPassword, validateAddress, isValidPincode, hasValidSize, hasNonEmptyStringElem, isValidMobile };

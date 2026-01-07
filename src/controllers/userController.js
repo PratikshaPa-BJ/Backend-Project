@@ -8,9 +8,7 @@ const createUser = async function (req, res) {
   try {
     let reqBody = req.body;
     if (!reqBody || !valid.isValidReqBody(reqBody)) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please provide details of user." });
+      return res.status(400).send({ status: false, msg: "Please provide details of user." });
     }
     let { fname, lname, email, phone, password, address } = reqBody;
 
@@ -33,76 +31,54 @@ const createUser = async function (req, res) {
     }
     for (let [key, value] of Object.entries({ fname, lname })) {
       if (!valid.isValid(value)) {
-        return res
-          .status(400)
-          .send({ status: false, msg: ` ${key} is mandatory` });
+        return res.status(400).send({ status: false, msg: ` ${key} is mandatory` });
       }
       if (!valid.isValidName(value)) {
-        return res
-          .status(400)
-          .send({
+        return res.status(400).send({
             status: false,
             msg: ` ${key} should be in string and alphabets only..`,
           });
       }
     }
     if (!req.files || req.files.length === 0) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please provide profile image" });
+      return res.status(400).send({ status: false, msg: "Please provide profile image" });
     }
 
     const profileImageUrl = await cloudinary.uploadToCloudinary(req.files[0]);
     reqBody.profileImage = profileImageUrl;
     if (!profileImageUrl) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "profile image is required." });
+      return res.status(400).send({ status: false, msg: "profile image is required." });
     }
 
     if (!valid.isValid(email)) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please provide email." });
+      return res.status(400).send({ status: false, msg: "Please provide email." });
     }
     if (!valid.isValidEmail(email)) {
-      return res
-        .status(400)
-        .send({
+      return res.status(400).send({
           status: false,
           msg: "email should be string and follow basic email format.",
         });
     }
     let emailAlreadyExist = await userModel.findOne({ email: reqBody.email });
     if (emailAlreadyExist) {
-      return res
-        .status(409)
-        .send({ status: false, msg: "user email already exist." });
+      return res.status(409).send({ status: false, msg: "user email already exist." });
     }
     if (!valid.isValid(phone)) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please provide phone number." });
+      return res.status(400).send({ status: false, msg: "Please provide phone number." });
     }
     if (!valid.isValidMobile(phone)) {
-      return res
-        .status(400)
-        .send({
+      return res.status(400).send({
           status: false,
           msg: "Please provide valid indian mobile number.",
         });
     }
     let mobileAlreadyExist = await userModel.findOne({ phone: reqBody.phone });
     if (mobileAlreadyExist) {
-      return res
-        .status(409)
-        .send({ status: false, msg: "Mobile number already exist." });
+      return res.status(409).send({ status: false, msg: "Mobile number already exist." });
     }
 
     if (!valid.isValid(password)) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please provide password." });
+      return res.status(400).send({ status: false, msg: "Please provide password." });
     }
     if (!valid.isValidPassword(password)) {
       return res.status(400).send({
@@ -117,15 +93,11 @@ const createUser = async function (req, res) {
       try {
         address = JSON.parse(address);
       } catch (e) {
-        return res
-          .status(400)
-          .send({ status: false, msg: "address must be valid JSON" });
+        return res.status(400).send({ status: false, msg: "address must be valid JSON" });
       }
     }
     if (!address || typeof address !== "object") {
-      return res
-        .status(400)
-        .send({
+      return res.status(400).send({
           status: false,
           msg: "Please provide address in object format.",
         });
@@ -219,13 +191,9 @@ const userProfileDetails = async function (req, res) {
     let getUserDetails = await userModel.findById(userIdFromReq);
 
     if (!getUserDetails) {
-      return res
-        .status(404)
-        .send({ status: false, msg: "User details not found.." });
+      return res.status(404).send({ status: false, msg: "User details not found.." });
     }
-    return res
-      .status(200)
-      .send({
+    return res.status(200).send({
         status: true,
         msg: "User profile details.",
         data: getUserDetails,
@@ -243,9 +211,7 @@ const updateUserDetails = async function (req, res) {
     const hasBody = reqBody && valid.isValidReqBody(reqBody);
     const hasFiles = files && files.length > 0;
     if (!hasBody && !hasFiles) {
-      return res
-        .status(400)
-        .send({
+      return res.status(400).send({
           status: false,
           msg: "Please provide user details which you want to update..",
         });
@@ -255,14 +221,10 @@ const updateUserDetails = async function (req, res) {
     if (fname !== undefined) {
       fname = fname.trim();
       if (!valid.isValid(fname)) {
-        return res
-          .status(400)
-          .send({ status: false, msg: " fname is mandatory" });
+        return res.status(400).send({ status: false, msg: " fname is mandatory" });
       }
       if (!valid.isValidName(fname)) {
-        return res
-          .status(400)
-          .send({
+        return res.status(400).send({
             status: false,
             msg: " fname should be in string and alphabets only..",
           });
@@ -273,14 +235,10 @@ const updateUserDetails = async function (req, res) {
     if (lname !== undefined) {
       lname = lname.trim();
       if (!valid.isValid(lname)) {
-        return res
-          .status(400)
-          .send({ status: false, msg: " last name is mandatory" });
+        return res.status(400).send({ status: false, msg: " last name is mandatory" });
       }
       if (!valid.isValidName(lname)) {
-        return res
-          .status(400)
-          .send({
+        return res.status(400).send({
             status: false,
             msg: " last name should be in string and alphabets only..",
           });
@@ -292,14 +250,10 @@ const updateUserDetails = async function (req, res) {
         email = email.trim().toLowerCase();
       }
       if (!valid.isValid(email)) {
-        return res
-          .status(400)
-          .send({ status: false, msg: "Please provide email" });
+        return res.status(400).send({ status: false, msg: "Please provide email" });
       }
       if (!valid.isValidEmail(email)) {
-        return res
-          .status(400)
-          .send({
+        return res.status(400).send({
             status: false,
             msg: "email should be string and follow basic email format..",
           });
@@ -309,23 +263,17 @@ const updateUserDetails = async function (req, res) {
         _id: { $ne: useIdFromReq },
       });
       if (emailExist) {
-        return res
-          .status(409)
-          .send({ status: false, msg: "user email already exist.." });
+        return res.status(409).send({ status: false, msg: "user email already exist.." });
       }
       reqBody.email = email;
     }
     if (phone !== undefined) {
       phone = phone.trim();
       if (!valid.isValid(phone)) {
-        return res
-          .status(400)
-          .send({ status: false, msg: "Please provide mobile number.." });
+        return res.status(400).send({ status: false, msg: "Please provide mobile number.." });
       }
       if (!valid.isValidMobile(phone)) {
-        return res
-          .status(400)
-          .send({
+        return res.status(400).send({
             status: false,
             msg: "Phone number should be 10 digit and valid indian number..",
           });
@@ -335,9 +283,7 @@ const updateUserDetails = async function (req, res) {
         _id: { $ne: useIdFromReq },
       });
       if (phoneNoExist) {
-        return res
-          .status(409)
-          .send({ status: false, msg: "Mobile number already exist.." });
+        return res.status(409).send({ status: false, msg: "Mobile number already exist.." });
       }
       reqBody.phone = phone;
     }
@@ -345,9 +291,7 @@ const updateUserDetails = async function (req, res) {
     if (password !== undefined) {
       password = password.trim();
       if (!valid.isValid(password)) {
-        return res
-          .status(400)
-          .send({ status: false, msg: "Please provide password." });
+        return res.status(400).send({ status: false, msg: "Please provide password." });
       }
       if (!valid.isValidPassword(password)) {
         return res.status(400).send({
@@ -363,15 +307,11 @@ const updateUserDetails = async function (req, res) {
         try {
           address = JSON.parse(address);
         } catch (e) {
-          return res
-            .status(400)
-            .send({ status: false, msg: "address must be valid JSON" });
+          return res.status(400).send({ status: false, msg: "address must be valid JSON" });
         }
       }
       if (typeof address !== "object") {
-        return res
-          .status(400)
-          .send({
+        return res.status(400).send({
             status: false,
             msg: "Please provide address in object format.",
           });
@@ -408,16 +348,9 @@ const updateUserDetails = async function (req, res) {
       { $set: reqBody },
       { new: true }
     );
-    return res
-      .status(200)
-      .send({ status: true, msg: "User data updated", data: updateUserData });
+    return res.status(200).send({ status: true, msg: "User data updated", data: updateUserData });
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message });
   }
 };
-module.exports = {
-  createUser,
-  loginUser,
-  userProfileDetails,
-  updateUserDetails,
-};
+module.exports = { createUser, loginUser, userProfileDetails, updateUserDetails };

@@ -33,7 +33,6 @@ const createPaymentIntent = async (req, res) =>{
                 userId: orderExist.userId.toString()
             }
         })
-        console.log(paymentIntent);
         
         orderExist.paymentId = paymentIntent.id;
         await orderExist.save();
