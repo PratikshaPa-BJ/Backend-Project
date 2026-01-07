@@ -107,45 +107,45 @@ Create a .env file in the root directory and add some variable name with value:
 
 ### 🔐 User APIs
 
-  | Method | Endpoint | Description |
-  |--------|----------|-------------|
-  | POST   |`/register` |  Register New User |
-  | POST   | `/login` | user login |
-  | GET   | `/users/:userId/profile` | Get user profile details |
-  | PUT   | `/users/:userId/profile` | Update user profile details |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   |`/register` |  Register New User |
+| POST   | `/login` | user login |
+| GET   | `/users/:userId/profile` | Get user profile details |
+| PUT   | `/users/:userId/profile` | Update user profile details |
 
 ### 📦 Product APIs
     
-    | Method | Endpoint | Description |
-    |--------|----------|-------------|
-    | POST   |`/products` |  Create New Product |
-    | GET   | `/products` | Get all products by applying Filter |
-    | GET   | `/products/:productId` | Get product by id |
-    | PUT   | `/products/:productId` | Update product |
-    | DELETE | `/products/:productId` | Delete product |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   |`/products` |  Create New Product |
+| GET   | `/products` | Get all products by applying Filter |
+| GET   | `/products/:productId` | Get product by id |
+| PUT   | `/products/:productId` | Update product |
+| DELETE | `/products/:productId` | Delete product |
 
 ### 🛒 Cart APIs
 
-    | Method | Endpoint | Description |
-    |--------|----------|-------------|
-    | POST   |`/users/:userId/cart` |  Add Product to cart  |
-    | PUT  | `/users/:userId/cart` | Update cart  |
-    | GET   | `/users/:userId/cart` | View Cart  |
-    | DELETE | `/users/:userId/cart` | Delete Cart |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   |`/users/:userId/cart` |  Add Product to cart  |
+| PUT  | `/users/:userId/cart` | Update cart  |
+| GET   | `/users/:userId/cart` | View Cart  |
+| DELETE | `/users/:userId/cart` | Delete Cart |
 
 ### 📑 Order APIs
      
-    | Method | Endpoint | Description |
-    |--------|----------|-------------|
-    | POST   |`/users/:userId/order` |  User place order  |
-    | PUT    | `/users/:userId/order` | User can cancel order(if cancellable)  |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   |`/users/:userId/order` |  User place order  |
+| PUT    | `/users/:userId/order` | User can cancel order(if cancellable)  |
 
 ### 💳 Payment APIs(Stripe)
 
-    | Method | Endpoint | Description |
-    |--------|----------|-------------|
-    | POST   |`/api/payments/create-payment-intent` |  Create Stripe Payment Intent  |
-    | PUT    | `/api/payments/payment/webhook` | Stripe webhook endpoint  |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   |`/api/payments/create-payment-intent` |  Create Stripe Payment Intent  |
+| PUT    | `/api/payments/payment/webhook` | Stripe webhook endpoint  |
 
 
 ##  Installation & Setup
