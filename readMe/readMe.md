@@ -1,9 +1,18 @@
 ## Blogging Platform Backend (Node.js + Express + MongoDB)
 
-## overview
+##  Overview
 
-This Project is basically a Node.js, Express.js and MongoDb based Backend Application that manages authors and their blogs.
-Authors can register, login and create blogs. Blogs can be updated, retrieved or deleted with proper validation and authorization. This project supports user authentication, authorization, CRUD operations and Filtering for Blogs.
+This Project is basically a Node.js, Express.js and MongoDb based Backend Application that manages authors and their blogs.It supports:
+
+- Author registration and login
+- JWT based authentication and authorization
+- Secure blog creation, update, retrieval and deletion
+- Advance blog filtering using query parameters
+- Soft deletion and proper validation
+
+The system ensures that only the blog owner can update or delete their blogs. 
+
+This project is designed as a scalable backend foundation for a real world blogging platform and demonstrates best practices in Backend Development.
 
 ## Tech Stack
 
@@ -12,7 +21,19 @@ Authors can register, login and create blogs. Blogs can be updated, retrieved or
 - **MongoDB**
 - **Mongoose**
 - **JWT Authentication**
+- **Bcrypt for password hashing**
 - **Postman ( API Testing)**
+- **dotenv**
+
+## Features 
+
+- User authentication & authorization
+- Role based access (blog owner only)
+- Blog filtering ( category, tags, subcategory, author, publish status)
+- Soft delete suppport
+- Clean MVC architecture
+- Proper error handling & validation
+
 
 ## Phase I
 
@@ -164,9 +185,15 @@ Authors can register, login and create blogs. Blogs can be updated, retrieved or
 
       node src/index.js
 
+## Project Author
+
+###  Pratiksha Parihari
+
+Backend Developer (Node.js | MongoDB)
+
 ## License
  
- This Project is for learning Purposes
+ This Project is for learning and practice Purposes
 
 
 

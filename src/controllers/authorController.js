@@ -22,6 +22,10 @@ const createAuthor = async function (req, res) {
     if (typeof email === "string") {
       reqBody.email = email.trim().toLowerCase();
     }
+    if (typeof password === "string") {
+      password = password.trim();
+      reqBody.password = password;
+    }
  
     for (let [key, value] of Object.entries({ fname, lname })) {
       if (!valid.isValid(value)) {
@@ -91,10 +95,14 @@ const loginData = async function (req, res) {
         msg: "Please enter email and password for log in",
       });
     }
-    const { email, password } = req.body;
+    let { email, password } = req.body;
 
     if (typeof email === "string") {
-      req.body.email = email.trim().toLowerCase();
+      email = email.trim().toLowerCase()
+      req.body.email = email;
+    }
+    if(typeof password === "string"){
+      password = password.trim()
     }
 
     if (!valid.isValid(email)) {
@@ -108,7 +116,7 @@ const loginData = async function (req, res) {
     }
     let authorExist = await authorModel.findOne({ email: req.body.email });
     if (!authorExist) {
-      return res.status(401).send({ status: false, msg: "Email id not found.." });
+      return res.status(401).send({ status: false, msg: "Email id is not found.." });
     }
 
     if (!valid.isValid(password)) {
@@ -122,7 +130,7 @@ const loginData = async function (req, res) {
     }
     console.log("Logged in successfully..");
 
-    let token = jwt.sign({ authorId: authorExist._id }, process.env.JWT_SECRET, { expiresIn: "1h"} );
+    let token = jwt.sign({ authorId: authorExist._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h"} );
     res.setHeader("x-api-key", token);
 
     return res.status(200).send({ status: true, msg: "successfully logged in", data: { token } });

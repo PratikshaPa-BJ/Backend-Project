@@ -10,8 +10,7 @@ const createBlogs = async function (req, res) {
     if (!reqBody || !valid.isValidReqBody(reqBody)) {
       return res.status(400).send({ status: false, msg: "Please provide blog details." });
     }
-    let { title, body, tags, category, authorId, isPublished, subcategory } =
-      reqBody;
+    let { title, body, tags, category, authorId, isPublished, subcategory } = reqBody;
 
     if (!valid.isValid(authorId)) {
       return res.status(400).send({ status: false, msg: "author id is mandatory.." });
@@ -75,8 +74,7 @@ const createBlogs = async function (req, res) {
       });
     }
     category = category.trim();
-    reqBody.category =
-      category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+    reqBody.category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 
     if (subcategory !== undefined) {
       if (!Array.isArray(subcategory) || subcategory.length === 0) {
@@ -134,13 +132,13 @@ const getBlogData = async function (req, res) {
       }
       if (valid.isValid(category)) {
         category = category.trim();
-        category =
-          category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+        category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
         obj.category = category;
       }
 
       if (tags) {
         const tagsArr = valid.parseToArray(tags);
+
         if (!valid.hasValidStringElem(tagsArr)) {
           return res.status(400).send({ status: false, msg: "Invalid tags format.." });
         }
@@ -242,6 +240,7 @@ const updateBlogData = async function (req, res) {
     if (Object.keys(pushArr).length > 0) {
       allField.$addToSet = pushArr;
     }
+    
     let updateBlogData = await blogModel.findOneAndUpdate(
       { _id: blogIdFromReq, isDeleted: false },
       allField,
