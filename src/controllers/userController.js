@@ -13,16 +13,20 @@ const createUser = async function(req, res){
     let { title, name, phone, email, password, address } = reqbody;
 
     if(typeof name === "string"){
-      reqbody.name = name.trim()
+      name = name.trim()
+      reqbody.name = name
     }
     if(typeof phone === "string"){
-      reqbody.phone = phone.trim()
+      phone = phone.trim();
+      reqbody.phone = phone
     }
     if(typeof email === "string"){
-      reqbody.email = email.trim()
+      email = email.trim();
+      reqbody.email = email
     }
     if(typeof password === "string"){
-      reqbody.password = password.trim()
+      password = password.trim()
+      reqbody.password = password
     }
 
     if(!valid.isValid(title)){
@@ -116,14 +120,14 @@ const loginUser = async function(req, res){
      }
 
     if(!valid.isValid(email)){
-      return res.status(400).send({ status: false, msg: "Please enter email.."})
+      return res.status(400).send({ status: false, msg: "e-mail is required."})
     }
     if(!valid.isValidEmail(email)){
       return res.status(400).send({ status: false, msg: "Please enter valid email address.."})
     }
     let emailExist = await userModel.findOne({email: email})
     if(!emailExist){
-      return res.status(404).send({ status: false, msg: "No account found with this email.."})
+      return res.status(401).send({ status: false, msg: "Invalid email "})
     }
     if(!valid.isValid(password)){
       return res.status(400).send({ status: false, msg: "Please enter password.."})
@@ -136,7 +140,7 @@ const loginUser = async function(req, res){
     }
       console.log("Logged in successfully..");
 
-      let token = jwt.sign({ userId: emailExist._id}, process.env.JWT_SECRET, { expiresIn: "1h"});
+      let token = jwt.sign({ userId: emailExist._id}, process.env.JWT_SECRET_KEY, { expiresIn: "1h"});
       res.setHeader("x-api-key", token );
       res.status(200).send({ status: true, message: "Successfully logged in.", data: {token } });
     

@@ -256,7 +256,7 @@ const updateBookByid = async function (req, res) {
           });
       }
       ISBN = ISBN.trim();
-      let ISBNalreadyExist = await bookModel.findOne({ ISBN: ISBN });
+      let ISBNalreadyExist = await bookModel.findOne({ ISBN: ISBN, _id: { $ne : bookIdFromReq } });
       if (ISBNalreadyExist) {
         return res.status(409).send({
             status: false,

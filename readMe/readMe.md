@@ -2,7 +2,17 @@
 
 ## Overview
 
-This is a Backend API Project for managing Books, Users and Reviews. It allows authenticated users to create, update, delete and view books as well as manage book reviews. This project uses JWT Authentication, Express Routing and MongoDB for data handling..
+This is a RESTful Backend API Project for managing Users, Books, and Book Reviews using Node.js, Express.js and MongoDB. It allows :
+
+- JWT based authentication to securely handle user login and protected routes
+- Role-based authorization to ensure that only the owner of a book can create, update or delete it
+- CRUD operations for books and reviews with proper validation and error handling
+- advanced filtering and sorting of books using query parameters such as userId, category, subcategory etc.
+- Reviews are stored in a seperate collection, book review count is automatically updated on add/delete operations
+- Bcrypt for secure password hashing and protection of user credentials
+- soft delete functionality to preserve data integrity
+- MVC architecture for better maintainability and scalability
+- Configured environment variables using .env for secure configuration management
 
 ## Tech Stack
 
@@ -13,6 +23,7 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 - **JWT Authentication** 
 - **Bcrypt for password hashing** 
 - **Postman ( API Testing )**
+- **dotenv**
 
 ### Models
 
@@ -352,13 +363,17 @@ This is a Backend API Project for managing Books, Users and Reviews. It allows a
 
 ### 3.  Create .env file
 
-     JWT_SECRET=yourSecretKey
+     JWT_SECRET_KEY=yourSecretKey
      MONGO_URI=mongoDbConnectionString
 
 ### 4.  Start the server
 
      node src/index.js
 
+## Author
+
+Pratiksha Parihari
+
 ## License
 
-This Project is for learning purpose
+This Project is for learning and practice purposes.

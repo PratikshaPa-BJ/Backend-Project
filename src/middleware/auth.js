@@ -8,7 +8,7 @@ const tokenValidation = function (req, res, next) {
     if (!token) {
       return res.status(401).send({ status: false, msg: "Token must be present in the header.." });
     }
-    jwt.verify(token, process.env.JWT_SECRET, function (error, decodedToken) {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, function (error, decodedToken) {
       if (error) {
         return res.status(401).send({ status: false, msg: error.message });
       } else {

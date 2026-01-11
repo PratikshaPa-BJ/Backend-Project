@@ -89,10 +89,10 @@ function validateDate(releasedAt) {
   return regx.test(releasedAt);
 }
 
-const isNumeric = (input) => {
-  var re = /^(?:[1-9]\d*|0)\.\d+$|^[1-9]\d*$/;
-  return re.test(input);
-};
+// const isNumeric = (input) => {
+//   var re = /^(?:[1-9]\d*|0)\.\d+$|^[1-9]\d*$/;
+//   return re.test(input);
+// };
 
 function isValidMobile(mobile) {
   if(typeof mobile !== "string"){
@@ -103,4 +103,4 @@ function isValidMobile(mobile) {
   return regx.test(mobile);
 }
 
-module.exports = { isValidReqBody, isValid, isValidTitle, isValidName, isValidEmail, isValidPassword, isValidBooktitle, isValidPincode, isValidISBN, validateDate, isNumeric, isValidMobile};
+module.exports = { isValidReqBody, isValid, isValidTitle, isValidName, isValidEmail, isValidPassword, isValidBooktitle, isValidPincode, isValidISBN, validateDate, isValidMobile};
