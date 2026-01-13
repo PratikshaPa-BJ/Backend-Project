@@ -73,19 +73,21 @@ Figure out if you can also use caching while redirecting to the original url fro
 
 ## Successful Response structure
 
-{
+```yaml{
 status: true,
 data: {
 
 }
 }
-
+```
 ## Error Response structure
-
+```yaml
 {
 status: false,
 message: ""
 }
+```
+
 Response samples
 
 ## Url shorten response
