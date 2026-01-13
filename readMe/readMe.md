@@ -90,13 +90,14 @@ Response samples
 
 ## Url shorten response
 
-{
-"data": {
-"longUrl": "https://www.amazon.in/s?rh=n%3A976419031%2Cn%3A1389401031&dc&qid=1763154840&rnid=976419031&ref=sr_nr_n_8",
-"shortUrl": "http://localhost:3000/ghfgfg",
-"urlCode": "ghfgfg"
-}
-}
+   ```yaml  {
+     "data": {
+     "longUrl": "https://www.amazon.in/s?rh=n%3A976419031%2Cn%3A1389401031&dc&qid=1763154840&rnid=976419031&ref=sr_nr_n_8",
+     "shortUrl": "http://localhost:3000/ghfgfg",
+     "urlCode": "ghfgfg"
+     }
+     }
+   ```  
 
 ## Installation & Setup
 
@@ -119,6 +120,10 @@ Response samples
 
       node src/index.js
 
+##  Author
+
+Pratiksha Parihari
+
 ## License
 
-This project is for learning purpose
+This project is for learning and practice purposes.
