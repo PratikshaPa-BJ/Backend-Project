@@ -1,6 +1,7 @@
 const collegeModel = require("../models/collegeModel");
 const internModel = require("../models/internModel");
 const valid = require("../validation/validator");
+const uploadToCloudinary = require("../utils/cloudinary")
 
 const createCollegeData = async function (req, res) {
   try {
@@ -13,7 +14,7 @@ const createCollegeData = async function (req, res) {
         });
     }
 
-    let { name, fullName, logoLink } = reqbody;
+    let { name, fullName } = reqbody;
 
     if (!valid.isValid(name)) {
       return res.status(400).send({
@@ -27,16 +28,16 @@ const createCollegeData = async function (req, res) {
           msg: "college short name should contain lowercase alphabets.. ",
         });
     }
-    name = name.trim();
+    name = name.toLowerCase().trim();
 
-    let collegeExist = await collegeModel.findOne({ name });
+    let collegeExist = await collegeModel.findOne({ name, isDeleted:false });
     if (collegeExist) {
       return res.status(409).send({ status: false, msg: "College short name already exist.." });
     }
     if (!valid.isValid(fullName)) {
       return res.status(400).send({
           status: false,
-          msg: "Please enter college full name and in string format..",
+          msg: "Please enter college full name ",
         });
     }
     if (!valid.isValidCollegeName(fullName)) {
@@ -47,19 +48,26 @@ const createCollegeData = async function (req, res) {
     }
     fullName = fullName.trim();
 
-    let collegeFnameExist = await collegeModel.findOne({ fullName });
+    let collegeFnameExist = await collegeModel.findOne({ fullName, isDeleted:false });
     if (collegeFnameExist) {
       return res.status(409).send({ status: false, msg: "College full name already exist.." });
     }
 
-    if (!valid.isValid(logoLink)) {
-      return res.status(400).send({ status: false, msg: "Please enter college logo link." });
+    if(!req.files || req.files.length === 0){
+      return res.status(400).send({ status: false, msg: "Please provide college logo image "})
     }
-    logoLink = logoLink.trim();
-    if (!valid.isValidLogolink(logoLink)) {
-      return res.status(400).send({ status: false, msg: "Please enter valid logo link" });
+    const allowedTypes = [ "image/jpeg", "image/png", "image/jpg" ];
+    if(!allowedTypes.includes(req.files[0].mimetype)){
+      return res.status(400).send({ status: false, msg: " Only JPG, JPEG, PNG images are allowed "})
     }
-    let createCollege = await collegeModel.create({ name, fullName, logoLink });
+    const MAX_SIZE = 2 * 1024 * 1024;
+    if(req.files[0].size > MAX_SIZE){
+     return res.status(400).send({ status: false, msg: " image size should be less than 2 MB "})
+    }
+    
+    const logoLinkURL = await uploadToCloudinary(req.files[0]);
+
+    let createCollege = await collegeModel.create({ name, fullName, logoLink:logoLinkURL });
     res.status(201).send({ status: true, data: createCollege });
   } catch (error) {
     return res.status(500).send({ status: false, msg: error.message });

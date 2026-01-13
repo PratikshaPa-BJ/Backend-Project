@@ -40,9 +40,5 @@ function isValidEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-function isValidLogolink(logolink) {
-  const regx = /^https?:\/\/.+\.(jpg|jpeg|png|webp|svg)$/i;
-  return regx.test(logolink);
-}
 
-module.exports = { isValidReqBody, isValid, isValidCollegeCode, isValidCollegeName, isValidName, isValidMobile, isValidEmail, isValidLogolink };
+module.exports = { isValidReqBody, isValid, isValidCollegeCode, isValidCollegeName, isValidName, isValidMobile, isValidEmail };

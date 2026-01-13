@@ -5,16 +5,39 @@
 This Project is basically a simple Backend application built using Node.js, Express and MongoDB. It provides RESTful APIs to manage colleges and interns, where :
 - colleges can register themselves.
 - interns can apply for internships under those colleges.
-It includes Validations, relationship between collections and clean API responses.
+
+The application follows a clean MVC architecture and includes robust input validation, file upload using Cloudinary and secure data handling using MongoDB with Mongoose.
+
+## Key Features
+
+- College registration with:
+   
+   - Unique short name
+   - Full college name
+   - Logo upload using Cloudinary
+
+- Intern registration with:
+
+   - Name, email and mobile validation
+   - Duplicate email and mobile prevention
+   - Association with a valid college
+
+- Fetch college details along with all interns applied
+- Centralized validation logic
+- Proper HTTP status codes and structured responses
+- Soft delete support (using isDeleted flag)
 
 
 ##  Tech Stack
 
 - **Node.js**
 - **Express.js**
-- **MongoDB + Mongoose**
+- **MongoDB**
+- **Mongoose**
 - **Javascript(ES6+)**
-- **Postman ( For Testing )**
+- **Cloudinary (image upload)**
+- **Multer (File handling)**
+- **Postman ( API Testing )**
 
 ### Models
 
@@ -33,7 +56,7 @@ It includes Validations, relationship between collections and clean API response
 ### POST /colleges
 
 - Create a college - a document for each member of the group
-- The logo link will be provided to you by the mentors. This link is a s3 (Amazon's Simple Service) url. Try accessing the link to see if the link is public or not.
+- The logo link will be provided by Cloudinary once you create account in Clodinary
 
   `Endpoint: BASE_URL/colleges`
 
@@ -74,7 +97,7 @@ It includes Validations, relationship between collections and clean API response
 {
   "name": "iith",
   "fullName": "Indian Institute of Technology, Hyderabad",
-  "logoLink": "https://functionup.s3.ap-south-1.amazonaws.com/colleges/iith.png",
+  "logoLink": "https://res.cloudinary.com/dqcpb9s7z/image/upload/v1768286983/college_logos/aqtsaatdjbajkoc5wzm8.png",
   "isDeleted": false,
 }
 ```
@@ -135,7 +158,7 @@ It includes Validations, relationship between collections and clean API response
 
 ##  Installation & Setup
 
-###  1. Cone the Repository
+###  1. Clone the Repository
      
        git clone <repoLink>
 
@@ -145,13 +168,35 @@ It includes Validations, relationship between collections and clean API response
 
 ###  3. Create .env file
 
-      MONGO_URI=yourmongoDbConnectionString
+      MONGO_URI=your_mongoDb_Connection_String
+      PORT=port_number
+      CLOUD_NAME=your_clodinary_name
+      CLOUD_API_KEY=your_api_key
+      CLOUD_API_SECRET=your_api_secret
+
 
 ###  4.  Start the server
 
       node src/index.js
 
 
-## Extra note
+##  Learning
+
+- REST API design
+- MVC architecture
+- Cloudinary image uploads
+- Mongoose schema design
+- Input validation
+- Error handling and status codes
+
+##  Author
+
+Pratiksha Parihari
+
+##  License
+
+This Project is created for learning and practice purposes.
+
+##  Extra note
 
    This Backend is also connected with Frontend for more clarity.

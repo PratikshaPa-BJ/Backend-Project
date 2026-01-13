@@ -1,4 +1,3 @@
-const { isValidObjectId } = require("mongoose");
 const internModel = require("../models/internModel");
 const valid = require("../validation/validator");
 const collegeModel = require("../models/collegeModel")
@@ -46,7 +45,7 @@ const createIntern = async function(req, res){
   if(!valid.isValidMobile(mobile)){
    return res.status(400).send( { status: false, msg: "Please enter valid mobile number.."})
   }
-  let mobileExist = await internModel.findOne({ mobile:mobile });
+  let mobileExist = await internModel.findOne({ mobile });
   if(mobileExist){
     return res.status(409).send({ status: false, msg: "mobile number already exist.."})
   }
